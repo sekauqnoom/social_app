@@ -3,7 +3,6 @@ import 'package:socialapp/pages/afterlogin/Home/home_page.dart';
 import 'package:socialapp/pages/afterlogin/course_table.dart';
 import 'package:socialapp/pages/afterlogin/dynamics.dart';
 import 'package:socialapp/pages/afterlogin/message/message_list.dart';
-import 'package:socialapp/pages/afterlogin/me.dart';
 
 class BottomMenuPage extends StatefulWidget {
   @override
@@ -21,14 +20,14 @@ class BottomMenuPageState extends State<BottomMenuPage> with SingleTickerProvide
 
   @override
   Widget build(BuildContext context){
-    List<Widget> viewList = [HomePage(), DynamicsPage(), CoursePage(), MessagePage(), MePage()];
+    List<Widget> viewList = [HomePage(), DynamicsPage(), CoursePage(), MessagePage()];
 
     return Container(
       child: Scaffold(
         body: viewList[_currentIndex],
         bottomNavigationBar: SafeArea(
           child: BottomNavigationBar(
-            selectedItemColor: Colors.lightBlueAccent,
+            selectedItemColor: Colors.deepPurpleAccent,
             items: [
               BottomNavigationBarItem(
                 icon: Image.asset("images/home.png",height: 36),
@@ -46,10 +45,10 @@ class BottomMenuPageState extends State<BottomMenuPage> with SingleTickerProvide
                 icon: Image.asset("images/message.png",height: 36),
                 title: Text("",style: TextStyle(color: Colors.blue),),
               ),
-              BottomNavigationBarItem(
-                icon: Image.asset("images/me.png",height: 36),
-                title: Text("",style: TextStyle(color: Colors.blue),),
-              ),
+//              BottomNavigationBarItem(
+//                icon: Image.asset("images/me.png",height: 36),
+//                title: Text("",style: TextStyle(color: Colors.blue),),
+//              ),
             ],
 
             currentIndex: _currentIndex,

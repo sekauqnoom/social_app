@@ -13,7 +13,23 @@ class CoursePageState extends State<CoursePage> {
         automaticallyImplyLeading: false,
         title: Text("我的课程", textAlign:TextAlign.start,style: TextStyle(fontSize: 28.0,),),
       ),
-      body:Text(""),
+      body: ListView(
+        children: <Widget>[
+          Row(
+            children: <Widget>[
+              Text("5月", style: TextStyle(fontSize: 20,),textAlign: TextAlign.center,),
+              Text("周一", style: TextStyle(fontSize: 20,),textAlign: TextAlign.center,),
+              Text("周二", style: TextStyle(fontSize: 20,),textAlign: TextAlign.center,),
+              Text("周三", style: TextStyle(fontSize: 20,),textAlign: TextAlign.center,),
+              Text("周四", style: TextStyle(fontSize: 20,),textAlign: TextAlign.center,),
+              Text("周五", style: TextStyle(fontSize: 20,),textAlign: TextAlign.center,),
+              Text("周六", style: TextStyle(fontSize: 20,),textAlign: TextAlign.center,),
+              Text("周日", style: TextStyle(fontSize: 20,),textAlign: TextAlign.center,),
+
+            ],
+          ),
+        ],
+      ),
     );
   }
 }

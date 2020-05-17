@@ -24,5 +24,4 @@ enum hobby{
   sports,
   music,
   dance,
-
 }

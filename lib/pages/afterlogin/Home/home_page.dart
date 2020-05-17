@@ -3,6 +3,7 @@ import 'package:socialapp/model/news/spider_news.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:socialapp/model/study_resources.dart';
+import 'browser.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -128,11 +129,19 @@ class HomePageState extends State<HomePage> with SingleTickerProviderStateMixin{
                             ),
                           onTap: () async{
                             var url = newsList[newsNumber].newsUrl;
+                            //调用第三方浏览器访问网页
                             if (await canLaunch(url)) {
                               await launch(url);
                             } else {
                               throw 'Could not launch $url';
                             }
+//                            //利用 WebView 访问网页
+//                            Navigator.of(context).push(new MaterialPageRoute(builder: (_){
+//                              return new Browser(
+//                                url: url,
+//                                title: newsList[newsNumber].title,
+//                              );
+//                            }));
                           },
                     );
                   }
@@ -161,6 +170,7 @@ class HomePageState extends State<HomePage> with SingleTickerProviderStateMixin{
                   }
                   if(index == 2){
                     return Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Icon(Icons.book),
                         Text("PDF搜索网站推荐", textAlign:TextAlign.start,style: TextStyle(fontSize: 20.0,),)
@@ -210,6 +220,7 @@ class HomePageState extends State<HomePage> with SingleTickerProviderStateMixin{
                 delegate: SliverChildBuilderDelegate((context, index) {
                   if(index == 0){
                     return Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Icon(Icons.video_library),
                         Text("在线教学视频网站", textAlign:TextAlign.start,style: TextStyle(fontSize: 20.0,),)
@@ -259,6 +270,7 @@ class HomePageState extends State<HomePage> with SingleTickerProviderStateMixin{
                 delegate: SliverChildBuilderDelegate((context, index) {
                   if(index == 0){
                     return Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Icon(Icons.web),
                         Text("在线非视频学习网站", textAlign:TextAlign.start,style: TextStyle(fontSize: 20.0,),)

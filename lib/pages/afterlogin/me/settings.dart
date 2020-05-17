@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
 
-class ForgetPasswordPage extends StatefulWidget {
+class SettingPage extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => ForgetPasswordPageState();
+  State<StatefulWidget> createState() => SettingPageState();
 }
 
-class ForgetPasswordPageState extends State<ForgetPasswordPage> {
+class SettingPageState extends State<SettingPage> {
   @override
   Widget build(BuildContext context){
     return Scaffold(
       appBar: AppBar(
+        leading: GestureDetector(
+          child: Icon(Icons.arrow_back_ios),
+          onTap: (){
+            Navigator.pop(context);
+          },
+        ),
         automaticallyImplyLeading: false,
         title: Text("设置", textAlign:TextAlign.start,style: TextStyle(fontSize: 28.0,),),
       ),
