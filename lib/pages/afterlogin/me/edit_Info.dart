@@ -1,33 +1,10 @@
-library flutter_datetime_picker;
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:socialapp/model/hobby/hobby_model.dart';
 import 'package:flutter/services.dart';
 import 'dart:async';
-import 'package:socialapp/pages/afterlogin/me/date_picker/date_model.dart';
-import 'package:socialapp/pages/afterlogin/me/date_picker/i18n_model.dart';
-import 'package:socialapp/pages/afterlogin/me/date_picker/datetime_picker_theme.dart';
-
-export 'package:socialapp/pages/afterlogin/me/date_picker/date_model.dart';
-export 'package:socialapp/pages/afterlogin/me/date_picker/i18n_model.dart';
-export 'package:socialapp/pages/afterlogin/me/date_picker/datetime_picker_theme.dart';
-
-typedef DateChangedCallback(DateTime time);
-typedef DateCancelledCallback();
-typedef String StringAtIndexCallBack(int index);
 
 class EditInfoPage extends StatefulWidget {
-  EditInfoPage(
-      {Key key, @required this.route, this.onChanged, this.locale, this.pickerModel});
-
-  final DateChangedCallback onChanged;
-
-  final _DatePickerRoute route;
-
-  final LocaleType locale;
-
-  final BasePickerModel pickerModel;
   @override
   State<StatefulWidget> createState() => EditInfoPageState();
 }
@@ -71,25 +48,27 @@ class EditInfoPageState extends State<EditInfoPage> with TickerProviderStateMixi
   TextEditingController _hobbyController = TextEditingController();
 
   FixedExtentScrollController leftScrollCtrl, middleScrollCtrl, rightScrollCtrl;
+  bool yearChoosed = false;
+  bool monthChoosed = false;
+  bool dayChoosed = false;
 
   void refreshScrollOffset() {
 //    print('refreshScrollOffset ${widget.pickerModel.currentRightIndex()}');
     leftScrollCtrl =
-    new FixedExtentScrollController(initialItem: widget.pickerModel.currentLeftIndex());
+    new FixedExtentScrollController(initialItem: 3);
     middleScrollCtrl =
-    new FixedExtentScrollController(initialItem: widget.pickerModel.currentMiddleIndex());
+    new FixedExtentScrollController(initialItem: 3);
     rightScrollCtrl =
-    new FixedExtentScrollController(initialItem: widget.pickerModel.currentRightIndex());
+    new FixedExtentScrollController(initialItem: 3);
   }
 
   @override
   void initState() {
     super.initState();
-    refreshScrollOffset();
-
     _userIdController.text = _userId;
     _nameController.text = _name;
     _snoController.text = _sno;
+    refreshScrollOffset();
 
 //    _userIdController.addListener((){
 //      if (_userIdController.text.contains(RegExp(r"^[a-zA-Z0-9_\u4e00-\u9fa5]+$"))) {
@@ -166,72 +145,17 @@ class EditInfoPageState extends State<EditInfoPage> with TickerProviderStateMixi
 
   @override
   Widget build(BuildContext context){
-    DatePickerTheme theme = new DatePickerTheme();
 
-//    final _year = new Set<int>();
-//    final _month = new Set<int>();
-//    final _day = new Set<int>();
-//
-//    for(int i=0; i < (DateTime.now().year - 1970); i++){
-//      _year.add(i+1970);
-//    }
-//    for(int i=0; i < 12; i++){
-//      _month.add(i+1);
-//    }
-//
-////    final _biggerFont = const TextStyle(fontSize: 18.0);
-//    final years = _year.map((year) {
-//        return new ListTile(
-////          title: new Text(year, style: _biggerFont),
-//          title: new Text(year.toString()+"年"),
-//          onTap: (){
-//            setState((){
-//              this._y = year;
-//            });
-//          },
-//        );
-//      },
-//    );
-//    final divided_1 = ListTile.divideTiles(
-//      context: context,
-//      tiles: years,
-//    ).toList();
-//    final months = _month.map((month) {
-//      return new ListTile(
-////          title: new Text(year, style: _biggerFont),
-//        title: new Text(month.toString()+"月"),
-//        onTap: (){
-//          setState((){
-//            this._m = month;
-//          });
-//        },
-//      );
-//    },
-//    );
-//    final divided_2 = ListTile.divideTiles(
-//      context: context,
-//      tiles: months,
-//    ).toList();
-//
-//    for(int i=0; i < (calcDateCount(_y,_m)); i++){
-//      _day.add(i+1);
-//    }
-//    final days = _day.map((day) {
-//      return new ListTile(
-////          title: new Text(year, style: _biggerFont),
-//        title: new Text(day.toString()+"日"),
-//        onTap: (){
-//          setState((){
-//            this._d = day;
-//          });
-//        },
-//      );
-//    },
-//    );
-//    final divided_3 = ListTile.divideTiles(
-//      context: context,
-//      tiles: days,
-//    ).toList();
+    final _year = new List<int>();
+    final _month = new List<int>();
+    final _day = new List<int>();
+
+    for(int i=0; i < (DateTime.now().year - 1970); i++){
+      _year.add(i+1970);
+    }
+    for(int i=0; i < 12; i++){
+      _month.add(i+1);
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -308,24 +232,139 @@ class EditInfoPageState extends State<EditInfoPage> with TickerProviderStateMixi
                 '出生日期: '+_birthday.year.toString()+'/'+_birthday.month.toString()+'/'+_birthday.day.toString(),
                 style: TextStyle(color: Colors.grey)),
             trailing: GestureDetector(
-              child: AnimatedBuilder(
-                animation: widget.route.animation,
-                builder: (BuildContext context, Widget child) {
-                  final double bottomPadding = MediaQuery.of(context).padding.bottom;
-                  return ClipRect(
-                    child: CustomSingleChildLayout(
-                      delegate: _BottomPickerLayout(widget.route.animation.value, theme,
-                          showTitleActions: widget.route.showTitleActions, bottomPadding: bottomPadding),
-                      child: GestureDetector(
-                        child: Material(
-                          color: theme.backgroundColor ?? Colors.white,
-                          child: _renderPickerView(theme),
-                        ),
-                      ),
-                    ),
-                  );
-                },
-              ),
+              child: Icon(Icons.keyboard_arrow_right),
+              onTap: (){
+                showModalBottomSheet(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return Column(
+                        children: <Widget>[
+                          _renderTitleActionsView(),               //确定，取消
+                          Expanded(
+                            child: Container(
+                              color: Colors.white,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Container(
+                                    child: Expanded(
+                                      flex: 1,
+                                      child: Container(
+                                        padding: EdgeInsets.all(8.0),
+                                        height: 210.0,
+                                        decoration: BoxDecoration(color: Colors.white),
+                                        child: ListView.builder(
+//                                        controller: leftScrollCtrl,
+                                          itemCount: _year.length,
+                                          itemBuilder: (context, position) {
+                                            return GestureDetector(
+                                              child: Container(
+                                                height: 36.0,
+                                                alignment: Alignment.center,
+                                                child: Text(
+                                                  _year[position].toString()+"年",
+                                                  style: TextStyle(color: Color(0xFF000046), fontSize: 18),
+                                                  textAlign: TextAlign.start,
+                                                ),
+                                              ),
+                                              onTap: (){
+                                                setState((){
+                                                  this._y = _year[position];
+                                                  this.yearChoosed = true;
+                                                });
+                                              },
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Text(
+                                    "",
+                                    style: TextStyle(color: Color(0xFF000046), fontSize: 18),
+                                  ),
+                                  Container(
+                                    child: Expanded(
+                                      flex: 1,
+                                      child: Container(
+                                        padding: EdgeInsets.all(8.0),
+                                        height: 210.0,
+                                        decoration: BoxDecoration(color: Colors.white),
+                                        child: yearChoosed ? ListView.builder(
+//                                        controller: middleScrollCtrl,
+                                          itemCount: _month.length,
+                                          itemBuilder: (context, position) {
+                                            return GestureDetector(
+                                              child: Container(
+                                                height: 36.0,
+                                                alignment: Alignment.center,
+                                                child: Text(
+                                                  _month[position].toString()+"月",
+                                                  style: TextStyle(color: Color(0xFF000046), fontSize: 18),
+                                                  textAlign: TextAlign.start,
+                                                ),
+                                              ),
+                                              onTap: (){
+                                                setState((){
+                                                  this._m = _month[position];
+                                                  this.monthChoosed = true;
+                                                  for(int i=0; i < (calcDateCount(_y,_m)); i++){
+                                                    _day.add(i+1);
+                                                  }
+                                                });
+                                              },
+                                            );
+                                          },
+                                        ) : null,
+                                      ),
+                                    ),
+                                  ),
+                                  Text(
+                                    "",
+                                    style: TextStyle(color: Color(0xFF000046), fontSize: 18),
+                                  ),
+                                  Container(
+                                    child: Expanded(
+                                      flex: 1,
+                                      child: Container(
+                                        padding: EdgeInsets.all(8.0),
+                                        height: 210.0,
+                                        decoration: BoxDecoration(color: Colors.white),
+                                        child: yearChoosed && monthChoosed ? ListView.builder(
+//                                        controller: leftScrollCtrl,
+                                          itemCount: _day.length,
+                                          itemBuilder: (context, position) {
+                                            return GestureDetector(
+                                              child: Container(
+                                                height: 36.0,
+                                                alignment: Alignment.center,
+                                                child: Text(
+                                                  _day[position].toString()+"日",
+                                                  style: TextStyle(color: Color(0xFF000046), fontSize: 18),
+                                                  textAlign: TextAlign.start,
+                                                ),
+                                              ),
+                                              onTap: (){
+                                                setState((){
+                                                  this._d = _day[position];
+                                                  this.dayChoosed = true;
+                                                });
+                                              },
+                                            );
+                                          },
+                                        ) : null,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      );
+                    }
+                );
+              },
             ),
           ),
 
@@ -358,6 +397,7 @@ class EditInfoPageState extends State<EditInfoPage> with TickerProviderStateMixi
     );
   }
 
+  //选择性别的对话框
   AlertDialog chooseGenderDialog(){
     return AlertDialog(
       title:Text("选择性别",style: TextStyle(color: Colors.blue,fontWeight: FontWeight.w700)),
@@ -391,221 +431,49 @@ class EditInfoPageState extends State<EditInfoPage> with TickerProviderStateMixi
       ),
     );
   }
-//  AlertDialog chooseBirthdayDialog(){
-//    return AlertDialog(
-//      title:Text("选择性别",style: TextStyle(color: Colors.blue,fontWeight: FontWeight.w700)),
-//      content: SizedBox(
-//        height: 60.0,
-//        child: SingleChildScrollView(
-//          child: ListBody(
-//            children: <Widget>[
-//              GestureDetector(
-//                child: Text("男"),
-//                onTap: (){
-//                  setState((){
-//                    this._gender = "男";
-//                    Navigator.pop(context);
-//                  });
-//                },
-//              ),
-//              Divider(),
-//              GestureDetector(
-//                child: Text("女"),
-//                onTap: (){
-//                  setState((){
-//                    this._gender = "女";
-//                    Navigator.pop(context);
-//                  });
-//                },
-//              ),
-//            ],
-//          ),
-//        ),
-//      ),
-//    );
-//  }
-  void _notifyDateChanged() {
-    if (widget.onChanged != null) {
-      widget.onChanged(widget.pickerModel.finalTime());
-    }
-  }
 
-  Widget _renderPickerView(DatePickerTheme theme) {
-    Widget itemView = _renderItemView(theme);
-    if (widget.route.showTitleActions) {
-      return Column(
-        children: <Widget>[
-          _renderTitleActionsView(theme),
-          itemView,
-        ],
-      );
-    }
-    return itemView;
-  }
-
-  Widget _renderColumnView(
-      ValueKey key,
-      DatePickerTheme theme,
-      StringAtIndexCallBack stringAtIndexCB,
-      ScrollController scrollController,
-      int layoutProportion,
-      ValueChanged<int> selectedChangedWhenScrolling,
-      ValueChanged<int> selectedChangedWhenScrollEnd) {
-    return Expanded(
-      flex: layoutProportion,
-      child: Container(
-          padding: EdgeInsets.all(8.0),
-          height: theme.containerHeight,
-          decoration: BoxDecoration(color: theme.backgroundColor ?? Colors.white),
-          child: NotificationListener(
-              onNotification: (ScrollNotification notification) {
-                if (notification.depth == 0 &&
-                    selectedChangedWhenScrollEnd != null &&
-                    notification is ScrollEndNotification &&
-                    notification.metrics is FixedExtentMetrics) {
-                  final FixedExtentMetrics metrics = notification.metrics;
-                  final int currentItemIndex = metrics.itemIndex;
-                  selectedChangedWhenScrollEnd(currentItemIndex);
-                }
-                return false;
-              },
-              child: CupertinoPicker.builder(
-                  key: key,
-                  backgroundColor: theme.backgroundColor ?? Colors.white,
-                  scrollController: scrollController,
-                  itemExtent: theme.itemHeight,
-                  onSelectedItemChanged: (int index) {
-                    selectedChangedWhenScrolling(index);
-                  },
-                  useMagnifier: true,
-                  itemBuilder: (BuildContext context, int index) {
-                    final content = stringAtIndexCB(index);
-                    if (content == null) {
-                      return null;
-                    }
-                    return Container(
-                      height: theme.itemHeight,
-                      alignment: Alignment.center,
-                      child: Text(
-                        content,
-                        style: theme.itemStyle,
-                        textAlign: TextAlign.start,
-                      ),
-                    );
-                  }))),
-    );
-  }
-
-  Widget _renderItemView(DatePickerTheme theme) {
+  //bottomSheet的头部
+  Widget _renderTitleActionsView() {
     return Container(
-      color: theme.backgroundColor ?? Colors.white,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Container(
-            child: widget.pickerModel.layoutProportions()[0] > 0
-                ? _renderColumnView(
-                ValueKey(widget.pickerModel.currentLeftIndex()),
-                theme,
-                widget.pickerModel.leftStringAtIndex,
-                leftScrollCtrl,
-                widget.pickerModel.layoutProportions()[0], (index) {
-              widget.pickerModel.setLeftIndex(index);
-            }, (index) {
-              setState(() {
-                refreshScrollOffset();
-                _notifyDateChanged();
-              });
-            })
-                : null,
-          ),
-          Text(
-            widget.pickerModel.leftDivider(),
-            style: theme.itemStyle,
-          ),
-          Container(
-            child: widget.pickerModel.layoutProportions()[1] > 0
-                ? _renderColumnView(
-                ValueKey(widget.pickerModel.currentLeftIndex()),
-                theme,
-                widget.pickerModel.middleStringAtIndex,
-                middleScrollCtrl,
-                widget.pickerModel.layoutProportions()[1], (index) {
-              widget.pickerModel.setMiddleIndex(index);
-            }, (index) {
-              setState(() {
-                refreshScrollOffset();
-                _notifyDateChanged();
-              });
-            })
-                : null,
-          ),
-          Text(
-            widget.pickerModel.rightDivider(),
-            style: theme.itemStyle,
-          ),
-          Container(
-            child: widget.pickerModel.layoutProportions()[2] > 0
-                ? _renderColumnView(
-                ValueKey(widget.pickerModel.currentMiddleIndex() * 100 +
-                    widget.pickerModel.currentLeftIndex()),
-                theme,
-                widget.pickerModel.rightStringAtIndex,
-                rightScrollCtrl,
-                widget.pickerModel.layoutProportions()[2], (index) {
-              widget.pickerModel.setRightIndex(index);
-              _notifyDateChanged();
-            }, null)
-                : null,
-          ),
-        ],
-      ),
-    );
-  }
-
-  // Title View
-  Widget _renderTitleActionsView(DatePickerTheme theme) {
-    String done = _localeDone();
-    String cancel = _localeCancel();
-
-    return Container(
-      height: theme.titleHeight,
+      height: 44.0,
       decoration: BoxDecoration(
-        color: theme.headerColor ?? theme.backgroundColor ?? Colors.white,
+        color: Color.fromARGB(255, 119, 136, 213),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Container(
-            height: theme.titleHeight,
+            height: 44.0,
             child: CupertinoButton(
               pressedOpacity: 0.3,
               padding: EdgeInsets.only(left: 16, top: 0),
               child: Text(
-                '$cancel',
-                style: theme.cancelStyle,
+                '取消',
+                style: TextStyle(color: Colors.black54, fontSize: 16),
               ),
               onPressed: () {
                 Navigator.pop(context);
-                if (widget.route.onCancel != null) {
-                  widget.route.onCancel();
-                }
               },
             ),
           ),
+          Expanded(
+            child: Text('选择出生日期',textAlign: TextAlign.center,style: TextStyle(fontSize: 20.0),),
+          ),
           Container(
-            height: theme.titleHeight,
+            height: 44.0,
             child: CupertinoButton(
               pressedOpacity: 0.3,
               padding: EdgeInsets.only(right: 16, top: 0),
               child: Text(
-                '$done',
-                style: theme.doneStyle,
+                '确定',
+                style: TextStyle(color: Colors.black, fontSize: 16),
               ),
               onPressed: () {
-                Navigator.pop(context, widget.pickerModel.finalTime());
-                if (widget.route.onConfirm != null) {
-                  widget.route.onConfirm(widget.pickerModel.finalTime());
+                if(yearChoosed && monthChoosed && dayChoosed){
+                  setState((){
+                    this.birthday = DateTime(_y,_m,_d);
+                  });
+                  Navigator.pop(context);
                 }
               },
             ),
@@ -615,170 +483,19 @@ class EditInfoPageState extends State<EditInfoPage> with TickerProviderStateMixi
     );
   }
 
-  String _localeDone() {
-    return i18nObjInLocale(widget.locale)['done'];
-  }
+  //判断当月天数
+  List<int> _leapYearMonths = const <int>[1, 3, 5, 7, 8, 10, 12];
 
-  String _localeCancel() {
-    return i18nObjInLocale(widget.locale)['cancel'];
-  }
-}
-
-class DatePicker {
-  ///
-  /// Display date picker bottom sheet.
-  ///
-  static Future<DateTime> showDatePicker(
-      BuildContext context, {
-        bool showTitleActions: true,
-        DateTime minTime,
-        DateTime maxTime,
-        DateChangedCallback onChanged,
-        DateChangedCallback onConfirm,
-        DateCancelledCallback onCancel,
-        locale: LocaleType.zh,
-        DateTime currentTime,
-        DatePickerTheme theme,
-      }) async {
-    return await Navigator.push(
-        context,
-        new _DatePickerRoute(
-            showTitleActions: showTitleActions,
-            onChanged: onChanged,
-            onConfirm: onConfirm,
-            onCancel: onCancel,
-            locale: locale,
-            theme: theme,
-            barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
-            pickerModel: DatePickerModel(
-                currentTime: currentTime, maxTime: maxTime, minTime: minTime, locale: locale)));
-  }
-
-  ///
-  /// Display date picker bottom sheet witch custom picker model.
-  ///
-  static Future<DateTime> showPicker(
-      BuildContext context, {
-        bool showTitleActions: true,
-        DateChangedCallback onChanged,
-        DateChangedCallback onConfirm,
-        DateCancelledCallback onCancel,
-        locale: LocaleType.en,
-        BasePickerModel pickerModel,
-        DatePickerTheme theme,
-      }) async {
-    return await Navigator.push(
-        context,
-        new _DatePickerRoute(
-            showTitleActions: showTitleActions,
-            onChanged: onChanged,
-            onConfirm: onConfirm,
-            onCancel: onCancel,
-            locale: locale,
-            theme: theme,
-            barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
-            pickerModel: pickerModel));
-  }
-}
-
-class _DatePickerRoute<T> extends PopupRoute<T> {
-  _DatePickerRoute({
-    this.showTitleActions,
-    this.onChanged,
-    this.onConfirm,
-    this.onCancel,
-    theme,
-    this.barrierLabel,
-    this.locale,
-    RouteSettings settings,
-    pickerModel,
-  })  : this.pickerModel = pickerModel ?? DatePickerModel(),
-        this.theme = theme ?? DatePickerTheme(),
-        super(settings: settings);
-
-  final bool showTitleActions;
-  final DateChangedCallback onChanged;
-  final DateChangedCallback onConfirm;
-  final DateCancelledCallback onCancel;
-  final DatePickerTheme theme;
-  final LocaleType locale;
-  final BasePickerModel pickerModel;
-
-  @override
-  Duration get transitionDuration => const Duration(milliseconds: 200);
-
-  @override
-  bool get barrierDismissible => true;
-
-  @override
-  final String barrierLabel;
-
-  @override
-  Color get barrierColor => Colors.black54;
-
-  AnimationController _animationController;
-
-  @override
-  AnimationController createAnimationController() {
-    assert(_animationController == null);
-    _animationController = BottomSheet.createAnimationController(navigator.overlay);
-    return _animationController;
-  }
-
-  @override
-  Widget buildPage(
-      BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation) {
-    Widget bottomSheet = new MediaQuery.removePadding(
-      context: context,
-      removeTop: true,
-      child: EditInfoPage(
-        onChanged: onChanged,
-        locale: this.locale,
-        route: this,
-        pickerModel: pickerModel,
-      ),
-    );
-    ThemeData inheritTheme = Theme.of(context, shadowThemeOnly: true);
-    if (inheritTheme != null) {
-      bottomSheet = new Theme(data: inheritTheme, child: bottomSheet);
+  int calcDateCount(int year, int month) {
+    if (_leapYearMonths.contains(month)) {
+      return 31;
+    } else if (month == 2) {
+      if ((year % 4 == 0 && year % 100 != 0) || year % 400 == 0) {
+        return 29;
+      }
+      return 28;
     }
-    return bottomSheet;
-  }
-}
-
-class _BottomPickerLayout extends SingleChildLayoutDelegate {
-  _BottomPickerLayout(this.progress, this.theme,
-      {this.itemCount, this.showTitleActions, this.bottomPadding = 0});
-
-  final double progress;
-  final int itemCount;
-  final bool showTitleActions;
-  final DatePickerTheme theme;
-  final double bottomPadding;
-
-  @override
-  BoxConstraints getConstraintsForChild(BoxConstraints constraints) {
-    double maxHeight = theme.containerHeight;
-    if (showTitleActions) {
-      maxHeight += theme.titleHeight;
-    }
-
-    return new BoxConstraints(
-        minWidth: constraints.maxWidth,
-        maxWidth: constraints.maxWidth,
-        minHeight: 0.0,
-        maxHeight: maxHeight + bottomPadding);
-  }
-
-  @override
-  Offset getPositionForChild(Size size, Size childSize) {
-    double height = size.height - childSize.height * progress;
-    return new Offset(0.0, height);
-  }
-
-  @override
-  bool shouldRelayout(_BottomPickerLayout oldDelegate) {
-    return progress != oldDelegate.progress;
+    return 30;
   }
 }
 
