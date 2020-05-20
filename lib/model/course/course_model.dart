@@ -10,7 +10,7 @@ class Course extends ChangeNotifier{
   String _department;  //系别
   int _classTime; //节次,如1-2节课就是第一节次
   int _weekday;  //周几的课
-  int _endWeek;  //第几周结课
+  String _week;  //周数，如1-16
 
   String get userId => _userId;
   String get courseId => _courseId;
@@ -18,10 +18,14 @@ class Course extends ChangeNotifier{
   String get teacher => _teacher;
   String get major => _major;
   String get department => _department;
-  int get endWeek => _endWeek;
   int get classTime => _classTime;
   String get classRoom => _classRoom;
   int get weekday => _weekday;
+  String get week => _week;
+
+  set week(String value) {
+    _week = value;
+  }
 
   set weekday(int value) {
     _weekday = value;
@@ -31,9 +35,6 @@ class Course extends ChangeNotifier{
     _classRoom = value;
   }
 
-  set endWeek(int value) {
-    _endWeek = value;
-  }
 
   set department(String value) {
     _department = value;
@@ -63,5 +64,9 @@ class Course extends ChangeNotifier{
     _classTime = value;
   }
 
+
+  Course(this._userId, this._courseId, this._courseName, this._teacher,
+      this._classRoom, this._major, this._department, this._weekday,
+      this._classTime, this._week);
 
 }

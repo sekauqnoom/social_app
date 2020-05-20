@@ -202,7 +202,7 @@ class EditInfoPageState extends State<EditInfoPage> with TickerProviderStateMixi
                     keyboardType: TextInputType.text,
                     decoration: InputDecoration(
                       contentPadding: EdgeInsets.all(10.0),
-                      icon: Icon(Icons.account_box),
+                      icon: Icon(Icons.person),
                       labelText: '姓名',
                     ),
                     //limit MAX input=20

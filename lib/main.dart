@@ -70,7 +70,7 @@ class SocialAppState extends State<SocialApp> with SingleTickerProviderStateMixi
         ChangeNotifierProvider(builder: (context) => FriendCounter(),),
         ChangeNotifierProvider(builder: (context) => Comment(),),
         ChangeNotifierProvider(builder: (context) => CommentCounter(),),
-        ChangeNotifierProvider(builder: (context) => Course(),),
+//        ChangeNotifierProvider(builder: (context) => Course(),),
         ChangeNotifierProvider(builder: (context) => CourseCounter(),),
         ChangeNotifierProvider(builder: (context) => Hobby(),),
         ChangeNotifierProvider(builder: (context) => HobbyCounter(),),
