@@ -20,6 +20,9 @@ class EditInfoPageState extends State<EditInfoPage> with TickerProviderStateMixi
   set birthday(DateTime value) {
     _birthday = value;
   }
+  final _year = new List<int>();
+  final _month = new List<int>();
+  final _day = new List<int>();
 
   String _sno ="290831";
   int _enrollYear = 2018;
@@ -48,8 +51,8 @@ class EditInfoPageState extends State<EditInfoPage> with TickerProviderStateMixi
   TextEditingController _hobbyController = TextEditingController();
 
   FixedExtentScrollController leftScrollCtrl, middleScrollCtrl, rightScrollCtrl;
-  bool yearChoosed = false;
-  bool monthChoosed = false;
+//  bool yearChoosed = true;
+//  bool monthChoosed = true;
   bool dayChoosed = false;
 
   void refreshScrollOffset() {
@@ -146,15 +149,14 @@ class EditInfoPageState extends State<EditInfoPage> with TickerProviderStateMixi
   @override
   Widget build(BuildContext context){
 
-    final _year = new List<int>();
-    final _month = new List<int>();
-    final _day = new List<int>();
-
-    for(int i=0; i < (DateTime.now().year - 1970); i++){
+    for(int i=0; i < (DateTime.now().year - 1970 +1); i++){
       _year.add(i+1970);
     }
     for(int i=0; i < 12; i++){
       _month.add(i+1);
+    }
+    for(int i=0; i < (calcDateCount(_y,_m)); i++){
+      _day.add(i+1);
     }
 
     return Scaffold(
@@ -255,25 +257,31 @@ class EditInfoPageState extends State<EditInfoPage> with TickerProviderStateMixi
                                         decoration: BoxDecoration(color: Colors.white),
                                         child: ListView.builder(
 //                                        controller: leftScrollCtrl,
-                                          itemCount: _year.length,
+                                          itemCount: _year.length *2 - 1,
                                           itemBuilder: (context, position) {
-                                            return GestureDetector(
-                                              child: Container(
-                                                height: 36.0,
-                                                alignment: Alignment.center,
-                                                child: Text(
-                                                  _year[position].toString()+"年",
-                                                  style: TextStyle(color: Color(0xFF000046), fontSize: 18),
-                                                  textAlign: TextAlign.start,
+                                            if(position.isEven){
+                                              int index = position~/2;
+                                              return GestureDetector(
+                                                child: Container(
+                                                  height: 36.0,
+                                                  alignment: Alignment.center,
+                                                  child: Text(
+                                                    _year[index].toString()+"年",
+                                                    style: TextStyle(color: this._y == _year[index]?  Colors.blue:Color(0xFF000046), fontSize: 18),
+                                                    textAlign: TextAlign.start,
+                                                  ),
                                                 ),
-                                              ),
-                                              onTap: (){
-                                                setState((){
-                                                  this._y = _year[position];
-                                                  this.yearChoosed = true;
-                                                });
-                                              },
-                                            );
+                                                onTap: (){
+                                                  setState((){
+                                                    this._y = _year[index];
+//                                                    this.yearChoosed = true;
+                                                  });
+                                                },
+                                              );
+                                            }
+                                            else{
+                                              return Divider(height: 5,);
+                                            }
                                           },
                                         ),
                                       ),
@@ -290,32 +298,36 @@ class EditInfoPageState extends State<EditInfoPage> with TickerProviderStateMixi
                                         padding: EdgeInsets.all(8.0),
                                         height: 210.0,
                                         decoration: BoxDecoration(color: Colors.white),
-                                        child: yearChoosed ? ListView.builder(
+                                        child:  ListView.builder(
 //                                        controller: middleScrollCtrl,
-                                          itemCount: _month.length,
+                                          itemCount: _month.length *2 -1,
                                           itemBuilder: (context, position) {
-                                            return GestureDetector(
-                                              child: Container(
-                                                height: 36.0,
-                                                alignment: Alignment.center,
-                                                child: Text(
-                                                  _month[position].toString()+"月",
-                                                  style: TextStyle(color: Color(0xFF000046), fontSize: 18),
-                                                  textAlign: TextAlign.start,
+                                            int index = position~/2;
+                                            if(position.isEven){
+                                              return GestureDetector(
+                                                child: Container(
+                                                  height: 36.0,
+                                                  alignment: Alignment.center,
+                                                  child: Text(
+                                                    _month[index].toString()+"月",
+                                                    style: TextStyle(color: this._m == _month[index]? Colors.blue :Color(0xFF000046), fontSize: 18),
+                                                    textAlign: TextAlign.start,
+                                                  ),
                                                 ),
-                                              ),
-                                              onTap: (){
-                                                setState((){
-                                                  this._m = _month[position];
-                                                  this.monthChoosed = true;
-                                                  for(int i=0; i < (calcDateCount(_y,_m)); i++){
-                                                    _day.add(i+1);
-                                                  }
-                                                });
-                                              },
-                                            );
+                                                onTap: (){
+                                                  setState((){
+                                                    this._m = _month[index];
+//                                                    this.monthChoosed = true;
+
+                                                  });
+                                                },
+                                              );
+                                            }
+                                            else{
+                                              return Divider(height: 5,);
+                                            }
                                           },
-                                        ) : null,
+                                        ),// : null,
                                       ),
                                     ),
                                   ),
@@ -330,29 +342,37 @@ class EditInfoPageState extends State<EditInfoPage> with TickerProviderStateMixi
                                         padding: EdgeInsets.all(8.0),
                                         height: 210.0,
                                         decoration: BoxDecoration(color: Colors.white),
-                                        child: yearChoosed && monthChoosed ? ListView.builder(
+                                        child:  ListView.builder(
 //                                        controller: leftScrollCtrl,
-                                          itemCount: _day.length,
+                                          itemCount: _day.length*2 -1,
                                           itemBuilder: (context, position) {
-                                            return GestureDetector(
-                                              child: Container(
-                                                height: 36.0,
-                                                alignment: Alignment.center,
-                                                child: Text(
-                                                  _day[position].toString()+"日",
-                                                  style: TextStyle(color: Color(0xFF000046), fontSize: 18),
-                                                  textAlign: TextAlign.start,
+                                            if(position.isEven){
+                                              int index = position~/2;
+                                              return GestureDetector(
+                                                behavior: HitTestBehavior.deferToChild,
+                                                child: Container(
+                                                  height: 36.0,
+                                                  alignment: Alignment.center,
+                                                  child: Text(
+                                                    _day[index].toString()+"日",
+                                                    style: TextStyle(color: this._d == _day[index]? Colors.blue :Color(0xFF000046), fontSize: 18),
+                                                    textAlign: TextAlign.start,
+                                                  ),
                                                 ),
-                                              ),
-                                              onTap: (){
-                                                setState((){
-                                                  this._d = _day[position];
-                                                  this.dayChoosed = true;
-                                                });
-                                              },
-                                            );
+                                                onTap: (){
+                                                  setState((){
+                                                    this._d = _day[index];
+                                                    this.dayChoosed = true;
+                                                    print('now choose'+ this._d.toString() +_day[index].toString());
+                                                  });
+                                                },
+                                              );
+                                            }
+                                            else{
+                                              return Divider(height: 5,);
+                                            }
                                           },
-                                        ) : null,
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -469,7 +489,7 @@ class EditInfoPageState extends State<EditInfoPage> with TickerProviderStateMixi
                 style: TextStyle(color: Colors.black, fontSize: 16),
               ),
               onPressed: () {
-                if(yearChoosed && monthChoosed && dayChoosed){
+                if( dayChoosed){
                   setState((){
                     this.birthday = DateTime(_y,_m,_d);
                   });

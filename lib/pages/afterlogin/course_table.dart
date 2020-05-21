@@ -24,8 +24,8 @@ class CoursePageState extends State<CoursePage> {
     Provider.of<CourseCounter>(context).initCourseList();
     var courseList = Provider.of<CourseCounter>(context).courseList;
     // 整理周一到周五各天的课程列表
-    if(mondayList.length==0 && tuesdayList.length==0 && wednesdayList.length==0&&
-        thursdayList.length==0&& fridayList.length==0&& saturdayList.length==0&& sundayList.length==0){
+    if(mondayList.length==0 && tuesdayList.length==0 && wednesdayList.length==0 &&
+        thursdayList.length==0 && fridayList.length==0 && saturdayList.length==0 && sundayList.length==0){
       for (Course course in courseList) {
         switch (course.weekday) {
           case 1:

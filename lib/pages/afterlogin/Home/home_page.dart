@@ -11,269 +11,126 @@ class HomePage extends StatefulWidget {
 }
 
 class HomePageState extends State<HomePage> with SingleTickerProviderStateMixin{
-  ScrollController _scrollController;
+//  ScrollController _scrollController;
   List<News> newsList;
   int newsLength;
-  int displayLength;
 
   @override
   void initState(){
     super.initState();
-    _scrollController = ScrollController(
-      keepScrollOffset: false,
-    );
+//    _scrollController = ScrollController(
+//      keepScrollOffset: false,
+//    );
   }
 
   @override
   void dispose() {
-    _scrollController.dispose();
+//    _scrollController.dispose();
     super.dispose();
   }
 
-//  @override
-//  Widget build(BuildContext context){
-////    return Scaffold(
-////        appBar: AppBar(
-////          automaticallyImplyLeading: false,
-////          title: Text("首页", textAlign:TextAlign.start,style: TextStyle(fontSize: 28.0,),),
-////        ),
-////      body:Text(""),
-////    );
-//  }
   void get_data() async{
     var data = await html_parse();
     setState(() {
       newsList = data;
       newsLength = data.length;
-//      displayLength = newsLength > 4 ? 11 : (newsLength + 2)*2 -1;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    int total = 11 + (pdf_search_site.length+2)*2 + (learning_video_site.length+1)*2 +(no_video_learning_site.length+1)*2;
-//    int total = 11 + 8 + 10 + 6;
-
-    return new MaterialApp(
-      home: Scaffold(
+    get_data();
+    return new Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
 //              backgroundColor: Colors.white,
           title: Text("首页", textAlign:TextAlign.start,style: TextStyle(fontSize: 28.0,),),
         ),
-
-        body: ListView.builder(
-          scrollDirection: Axis.vertical,
-          shrinkWrap: true,
-          itemCount: total,
-          itemBuilder: (context, index){
-            get_data();
-            if(index < 11){
-              if(index == 0){
-                return Row(
+        body: ListView(
+          children: <Widget>[
+            new GestureDetector(
+              onTap: () => Navigator.pushNamed(context, "/moreEvents", arguments: {
+                "newslist": newsList,
+                "newlength" :newsLength
+              }),
+              child: new Card(
+                elevation: 10.0,
+                margin: new EdgeInsets.only(left: 15.0, right: 15.0, top: 15.0),
+                color: Color.fromARGB(0, 255, 255, 255),
+                child: new Container(
+                  width: 400.0,
+                  height: 200.0,
+                  decoration: new BoxDecoration(
+                    color: Colors.white,
+                    image: new DecorationImage(
+                        image: new AssetImage("images/newsCard.png"),
+                        fit: BoxFit.cover),
+                    shape: BoxShape.rectangle, // <-- 这里需要设置为 rectangle
+                    borderRadius: new BorderRadius.all(
+                      const Radius.circular(
+                          15.0), // <-- rectangle 时，BorderRadius 才有效
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            new GestureDetector(
+              onTap: () => Navigator.pushNamed(context, "/resource" ),
+              child: new Card(
+                elevation: 10.0,
+                margin: new EdgeInsets.only(left: 15.0, right: 15.0, top: 15.0),
+                color: Color.fromARGB(0, 255, 255, 255),
+                child: Stack(
                   children: <Widget>[
-                    Icon(Icons.event),
-                    Text("校园时讯", textAlign:TextAlign.start,style: TextStyle(fontSize: 28.0,),)
+                    new Container(
+                      width: 400.0,
+                      height: 200.0,
+                      decoration: new BoxDecoration(
+                        color: Colors.white,
+                        image: new DecorationImage(
+                            image: new AssetImage("images/resourceCard.png"),
+                            fit: BoxFit.cover),
+                        shape: BoxShape.rectangle, // <-- 这里需要设置为 rectangle
+                        borderRadius: new BorderRadius.all(
+                          const Radius.circular(
+                              15.0), // <-- rectangle 时，BorderRadius 才有效
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      top: 10,
+                      child: Text('学习资源',
+                        style: TextStyle(
+                            color: Color.fromARGB(255, 119, 136, 213),
+                            fontSize: 25.0,
+                            fontWeight: FontWeight.w700),
+                      ),
+                    ),
+                    Positioned(
+                      left: 10.0,
+                      top: 50.0,
+                      child: Container(
+                        width: 60.0,
+                        height: 20.0,
+                        child: Text('点击进入',textAlign: TextAlign.center, style: TextStyle(color: Colors.white),),
+                        decoration: new BoxDecoration(
+                          color: Color.fromARGB(255, 119, 136, 213),
+                          shape: BoxShape.rectangle, // <-- 这里需要设置为 rectangle
+                          borderRadius: new BorderRadius.all(Radius.circular(5.0)), // <-- rectangle 时，BorderRadius 才有效
+                        ),
+                      ),
+                    ),
+//                    new Padding(
+//                      // 分别指定四个方向的补白
+//                      padding: const EdgeInsets.fromLTRB(20.0, 16.0, 50.0, 50.0),
+//                      child: Text('点击进入',),
+//                    ),
                   ],
-                );
-              }
-              else if(index == 9){
-                return FlatButton(
-                  //打开外部浏览器访问网站
-                  onPressed: (){
-                    Navigator.pushNamed(context, "/moreEvents", arguments: {
-                      "newslist": newsList,
-                      "newlength": newsLength
-                    });
-                  },
-                  child: Text("get more events...",
-                      style: TextStyle(
-                          color: Colors.blue,
-                          decoration: TextDecoration.underline
-                      )
-                  ),
-                );
-              }
-              else if (index.isEven && index!=10) {
-                int newsNumber = index ~/ 2 -1;
-                return ListTile(
-                  title: Text(newsList[newsNumber].title,
-                    style: TextStyle(
-                      color: Colors.blue,
-                      decoration: TextDecoration.underline,
-                    ),
-                    textAlign: TextAlign.start,
-                  ),
-                  subtitle: Text(newsList[newsNumber].time,
-                    style: TextStyle(
-                      color: Colors.grey,
-                    ),
-                    textAlign: TextAlign.end,
-                  ),
-                  onTap: () async{
-                    var url = newsList[newsNumber].newsUrl;
-                    //调用第三方浏览器访问网页
-                    if (await canLaunch(url)) {
-                      await launch(url);
-                    } else {
-                      throw 'Could not launch $url';
-                    }
-//                            //利用 WebView 访问网页
-//                            Navigator.of(context).push(new MaterialPageRoute(builder: (_){
-//                              return new Browser(
-//                                url: url,
-//                                title: newsList[newsNumber].title,
-//                              );
-//                            }));
-                  },
-                );
-              }
-              else {
-                return Divider(
-                  height: 5,
-                );
-              }
-            }
-            else if(index< 19){
-              index = index - 11;
-              if(index == 0){
-                return Row(
-                  children: <Widget>[
-                    Icon(Icons.link),
-                    Text("在线学习资源", textAlign:TextAlign.center,style: TextStyle(fontSize: 28.0,),)
-                  ],
-                );
-              }
-              if(index == 2){
-                return Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Icon(Icons.book),
-                    Text("PDF搜索网站推荐", textAlign:TextAlign.start,style: TextStyle(fontSize: 20.0,),)
-                  ],
-                );
-              }
-              else if (index.isEven) {
-                int resourceNumber = index ~/ 2 -2;
-                return ListTile(
-                  title: Text(pdf_search_site[resourceNumber].title,
-                    style: TextStyle(
-                      color: Colors.blue,
-                      decoration: TextDecoration.underline,
-                    ),
-                    textAlign: TextAlign.start,
-                  ),
-                  subtitle: Text(pdf_search_site[resourceNumber].description,
-                    style: TextStyle(
-                      color: Colors.grey,
-                    ),
-                    textAlign: TextAlign.end,
-                  ),
-                  onTap: () async{
-                    var url = pdf_search_site[resourceNumber].resourceUrl;
-                    if (await canLaunch(url)) {
-                      await launch(url);
-                    } else {
-                      throw 'Could not launch $url';
-                    }
-                  },
-                );
-              }
-              else {
-                return Divider(
-                  height: 5,
-                );
-              }
-            }
-            else if(index< 29){
-              index= index - 19;
-              if(index == 0){
-                return Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Icon(Icons.video_library),
-                    Text("在线教学视频网站", textAlign:TextAlign.start,style: TextStyle(fontSize: 20.0,),)
-                  ],
-                );
-              }
-              else if (index.isEven) {
-                int resourceNumber = index ~/ 2 -1;
-                return ListTile(
-                  title: Text(learning_video_site[resourceNumber].title,
-                    style: TextStyle(
-                      color: Colors.blue,
-                      decoration: TextDecoration.underline,
-                    ),
-                    textAlign: TextAlign.start,
-                  ),
-                  subtitle: Text(learning_video_site[resourceNumber].description,
-                    style: TextStyle(
-                      color: Colors.grey,
-                    ),
-                    textAlign: TextAlign.end,
-                  ),
-                  onTap: () async{
-                    var url = learning_video_site[resourceNumber].resourceUrl;
-                    if (await canLaunch(url)) {
-                      await launch(url);
-                    } else {
-                      throw 'Could not launch $url';
-                    }
-                  },
-                );
-              }
-              else {
-                return Divider(
-                  height: 5,
-                );
-              }
-            }
-            else{
-              index = index - 29;
-              if(index == 0){
-                return Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Icon(Icons.web),
-                    Text("在线非视频学习网站", textAlign:TextAlign.start,style: TextStyle(fontSize: 20.0,),)
-                  ],
-                );
-              }
-              else if (index.isEven) {
-                int resourceNumber = index ~/ 2 -1;
-                return ListTile(
-                  title: Text(no_video_learning_site[resourceNumber].title,
-                    style: TextStyle(
-                      color: Colors.blue,
-                      decoration: TextDecoration.underline,
-                    ),
-                    textAlign: TextAlign.start,
-                  ),
-                  subtitle: Text(no_video_learning_site[resourceNumber].description,
-                    style: TextStyle(
-                      color: Colors.grey,
-                    ),
-                    textAlign: TextAlign.end,
-                  ),
-                  onTap: () async{
-                    var url = no_video_learning_site[resourceNumber].resourceUrl;
-                    if (await canLaunch(url)) {
-                      await launch(url);
-                    } else {
-                      throw 'Could not launch $url';
-                    }
-                  },
-                );
-              }
-              else {
-                return Divider(
-                  height: 5,
-                );
-              }
-            }
-          },
+                ),
+              ),
+            ),
+          ],
         ),
-      ),
     );
   }
 }

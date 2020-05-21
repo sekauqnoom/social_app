@@ -16,6 +16,7 @@ import 'package:socialapp/model/shared_dynamics/dynamic_count.dart';
 import 'package:socialapp/model/user/user_model.dart';
 import 'package:socialapp/model/user/user_count.dart';
 import 'package:socialapp/model/news/spider_news.dart';
+import 'package:socialapp/pages/afterlogin/Home/resource_page.dart';
 
 import 'package:socialapp/pages/afterlogin/bottom_menu.dart';
 import 'package:socialapp/pages/beforelogin/find_password.dart';
@@ -43,12 +44,12 @@ class SocialApp extends StatefulWidget {
 
 class SocialAppState extends State<SocialApp> with SingleTickerProviderStateMixin{
   // This widget is the root of your application.
-  TabController controller;
+//  TabController controller;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
-    controller = new TabController(length: 4, vsync: this);
+//    controller = new TabController(length: 4, vsync: this);
 //    eventBus.on<EventOpenDrawer>().listen((EventOpenDrawer data) {
 //      if (data.flag) _scaffoldKey.currentState.openDrawer();
 //    });
@@ -56,7 +57,7 @@ class SocialAppState extends State<SocialApp> with SingleTickerProviderStateMixi
 
   @override
   void dispose() {
-    controller.dispose();
+//    controller.dispose();
     super.dispose();
   }
 
@@ -95,6 +96,7 @@ class SocialAppState extends State<SocialApp> with SingleTickerProviderStateMixi
           "/loginPage": (_) => LoginPage(),
           "/editInfo" : (_) => EditInfoPage(),
           "/settings":  (_) => SettingPage(),
+          "/resource": (_) => ResourcePage(),
         },
       ),
     );

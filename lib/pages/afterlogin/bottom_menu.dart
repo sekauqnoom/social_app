@@ -30,19 +30,23 @@ class BottomMenuPageState extends State<BottomMenuPage> with SingleTickerProvide
             selectedItemColor: Colors.deepPurpleAccent,
             items: [
               BottomNavigationBarItem(
-                icon: Image.asset("images/home.png",height: 36),
+//                icon: Image.asset("images/home.png",height: 36),
+                icon: new Icon(Icons.home, size: 32,),
                 title: Text("",style: TextStyle(color: Colors.blue),),
               ),
               BottomNavigationBarItem(
-                icon: Image.asset("images/dynamic.png",height: 36),
+//                icon: Image.asset("images/dynamic.png",height: 36),
+                icon: new Icon(Icons.camera, size: 28,),
                 title: Text("",style: TextStyle(color: Colors.blue),),
               ),
               BottomNavigationBarItem(
-                icon: Image.asset("images/course.png",height: 36),
+//                icon: Image.asset("images/course.png",height: 36),
+                icon: new Icon(Icons.calendar_today),
                 title: Text("",style: TextStyle(color: Colors.blue),),
               ),
               BottomNavigationBarItem(
-                icon: Image.asset("images/message.png",height: 36),
+//                icon: Image.asset("images/message.png",height: 36),
+                icon: new Icon(Icons.chat_bubble),
                 title: Text("",style: TextStyle(color: Colors.blue),),
               ),
 //              BottomNavigationBarItem(
@@ -50,11 +54,8 @@ class BottomMenuPageState extends State<BottomMenuPage> with SingleTickerProvide
 //                title: Text("",style: TextStyle(color: Colors.blue),),
 //              ),
             ],
-
             currentIndex: _currentIndex,
-
             type: BottomNavigationBarType.fixed,//设置类型
-
             //设置点击响应
             onTap: (int index){         //参数设置为默认的index，这个index就是点击的按钮的index
               setState(() {

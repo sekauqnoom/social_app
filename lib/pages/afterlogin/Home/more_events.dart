@@ -47,6 +47,7 @@ class MoreEventsPageState extends State<MoreEventsPage> with SingleTickerProvide
                 expandedHeight: 50,
 //              backgroundColor: Colors.white,
                 title: Text("校园时讯", textAlign:TextAlign.start,style: TextStyle(fontSize: 28.0,),),
+                centerTitle: true,
               ),
 
               SliverPadding(
@@ -82,9 +83,19 @@ class MoreEventsPageState extends State<MoreEventsPage> with SingleTickerProvide
                       );
                     }
                     else if(index == displayLength - 1){
-                      return Text("no more events",
+                      return ListTile(
+                        title: Text("点击获取更多时讯 →",
                           style: TextStyle(color: Colors.grey, fontSize: 30),
-                        textAlign: TextAlign.center,
+                          textAlign: TextAlign.center,
+                        ),
+                        onTap: () async{
+                          var url = 'https://news.uestc.edu.cn/';
+                          if (await canLaunch(url)) {
+                            await launch(url);
+                          } else {
+                            throw 'Could not launch $url';
+                          }
+                        },
                       );
                     }
                     else {
