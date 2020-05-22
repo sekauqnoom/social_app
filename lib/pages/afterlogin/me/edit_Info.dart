@@ -14,56 +14,44 @@ class EditInfoPageState extends State<EditInfoPage> with TickerProviderStateMixi
   String _name = "哈哈哈";
   String _gender = "女";
   DateTime _birthday = DateTime(2000,7,13);
-  int _y = DateTime.now().year;    //记录选中的生日年份
-  int _m = DateTime.now().month;    //记录选中的生日月份
-  int _d = DateTime.now().day;    //记录选中的生日日期
-  set birthday(DateTime value) {
-    _birthday = value;
-  }
-  final _year = new List<int>();
-  final _month = new List<int>();
-  final _day = new List<int>();
+  DateTime _birthdayChoosed;
 
   String _sno ="290831";
   int _enrollYear = 2018;
+  int _enrollYearChoosed;
   String _department = "信软";
+  String _departmentChoosed;
   String _major = "软件工程";
-  hobby _hobby = hobby.movie;
+//  hobby _hobby = hobby.movie;
+  List<String> _hobby = [];
+  List<String> _hobbyChoosed = [];
   GlobalKey _formKey = GlobalKey<FormState>();
 
+//  if(_hooby=hobby.movie){
+//
+//  }
+  set birthday(DateTime value) {
+    _birthday = value;
+  }
 
-  //TextEditingController for all information
+  set birthdayChoosed(DateTime value) {
+    _birthdayChoosed = value;
+  } //TextEditingController for all information
+
   TextEditingController _userIdController = TextEditingController();
   TextEditingController _nameController = TextEditingController();
   TextEditingController _snoController = TextEditingController();
+  TextEditingController _majorController = TextEditingController();
   bool _userIdCorrect = false;
   bool _nameCorrect = false;
   bool _snoCorrect = false;
+  bool _majorCorrect = false;
   String _userIdErrMsg;
   String _nameErrMsg;
   String _snoErrMsg;
+  String _majorErrMsg;
 
-  TextEditingController _genderController = TextEditingController();
-  TextEditingController _birthdayController = TextEditingController();
-  TextEditingController _enrollYearController = TextEditingController();
-  TextEditingController _departmentController = TextEditingController();
-  TextEditingController _majorController = TextEditingController();
-  TextEditingController _hobbyController = TextEditingController();
-
-  FixedExtentScrollController leftScrollCtrl, middleScrollCtrl, rightScrollCtrl;
-//  bool yearChoosed = true;
-//  bool monthChoosed = true;
-  bool dayChoosed = false;
-
-  void refreshScrollOffset() {
-//    print('refreshScrollOffset ${widget.pickerModel.currentRightIndex()}');
-    leftScrollCtrl =
-    new FixedExtentScrollController(initialItem: 3);
-    middleScrollCtrl =
-    new FixedExtentScrollController(initialItem: 3);
-    rightScrollCtrl =
-    new FixedExtentScrollController(initialItem: 3);
-  }
+  FixedExtentScrollController enrollYearScrollController = FixedExtentScrollController();
 
   @override
   void initState() {
@@ -71,8 +59,7 @@ class EditInfoPageState extends State<EditInfoPage> with TickerProviderStateMixi
     _userIdController.text = _userId;
     _nameController.text = _name;
     _snoController.text = _sno;
-    refreshScrollOffset();
-
+    _majorController.text = _major;
 //    _userIdController.addListener((){
 //      if (_userIdController.text.contains(RegExp(r"^[a-zA-Z0-9_\u4e00-\u9fa5]+$"))) {
 //        setState(() {
@@ -139,6 +126,25 @@ class EditInfoPageState extends State<EditInfoPage> with TickerProviderStateMixi
         });
       }
     });
+
+    _majorController.addListener((){
+      if (_majorController.text.isEmpty) {
+        setState(() {
+          _majorCorrect = false;
+          _majorErrMsg = "所在专业不能为空";
+        });
+      } else if (_snoController.text.length > 10) {
+        setState(() {
+          _majorCorrect = false;
+          _majorErrMsg = "专业名称过长";
+        });
+      } else {
+        setState(() {
+          _majorCorrect = true;
+          _majorErrMsg = null;
+        });
+      }
+    });
   }
 
   @override
@@ -148,16 +154,8 @@ class EditInfoPageState extends State<EditInfoPage> with TickerProviderStateMixi
 
   @override
   Widget build(BuildContext context){
-
-    for(int i=0; i < (DateTime.now().year - 1970 +1); i++){
-      _year.add(i+1970);
-    }
-    for(int i=0; i < 12; i++){
-      _month.add(i+1);
-    }
-    for(int i=0; i < (calcDateCount(_y,_m)); i++){
-      _day.add(i+1);
-    }
+    _hobbyChoosed = _hobby;
+    var hobbysCheck = new Map.fromIterable(Hobbys, key: (item) => item, value: (item) => _hobby.contains(item));
 
     return Scaffold(
       appBar: AppBar(
@@ -241,142 +239,24 @@ class EditInfoPageState extends State<EditInfoPage> with TickerProviderStateMixi
                     builder: (BuildContext context) {
                       return Column(
                         children: <Widget>[
-                          _renderTitleActionsView(),               //确定，取消
+                          _renderTitleActionsView('选择出生日期'),               //确定，取消
                           Expanded(
                             child: Container(
                               color: Colors.white,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Container(
-                                    child: Expanded(
-                                      flex: 1,
-                                      child: Container(
-                                        padding: EdgeInsets.all(8.0),
-                                        height: 210.0,
-                                        decoration: BoxDecoration(color: Colors.white),
-                                        child: ListView.builder(
-//                                        controller: leftScrollCtrl,
-                                          itemCount: _year.length *2 - 1,
-                                          itemBuilder: (context, position) {
-                                            if(position.isEven){
-                                              int index = position~/2;
-                                              return GestureDetector(
-                                                child: Container(
-                                                  height: 36.0,
-                                                  alignment: Alignment.center,
-                                                  child: Text(
-                                                    _year[index].toString()+"年",
-                                                    style: TextStyle(color: this._y == _year[index]?  Colors.blue:Color(0xFF000046), fontSize: 18),
-                                                    textAlign: TextAlign.start,
-                                                  ),
-                                                ),
-                                                onTap: (){
-                                                  setState((){
-                                                    this._y = _year[index];
-//                                                    this.yearChoosed = true;
-                                                  });
-                                                },
-                                              );
-                                            }
-                                            else{
-                                              return Divider(height: 5,);
-                                            }
-                                          },
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  Text(
-                                    "",
-                                    style: TextStyle(color: Color(0xFF000046), fontSize: 18),
-                                  ),
-                                  Container(
-                                    child: Expanded(
-                                      flex: 1,
-                                      child: Container(
-                                        padding: EdgeInsets.all(8.0),
-                                        height: 210.0,
-                                        decoration: BoxDecoration(color: Colors.white),
-                                        child:  ListView.builder(
-//                                        controller: middleScrollCtrl,
-                                          itemCount: _month.length *2 -1,
-                                          itemBuilder: (context, position) {
-                                            int index = position~/2;
-                                            if(position.isEven){
-                                              return GestureDetector(
-                                                child: Container(
-                                                  height: 36.0,
-                                                  alignment: Alignment.center,
-                                                  child: Text(
-                                                    _month[index].toString()+"月",
-                                                    style: TextStyle(color: this._m == _month[index]? Colors.blue :Color(0xFF000046), fontSize: 18),
-                                                    textAlign: TextAlign.start,
-                                                  ),
-                                                ),
-                                                onTap: (){
-                                                  setState((){
-                                                    this._m = _month[index];
-//                                                    this.monthChoosed = true;
-
-                                                  });
-                                                },
-                                              );
-                                            }
-                                            else{
-                                              return Divider(height: 5,);
-                                            }
-                                          },
-                                        ),// : null,
-                                      ),
-                                    ),
-                                  ),
-                                  Text(
-                                    "",
-                                    style: TextStyle(color: Color(0xFF000046), fontSize: 18),
-                                  ),
-                                  Container(
-                                    child: Expanded(
-                                      flex: 1,
-                                      child: Container(
-                                        padding: EdgeInsets.all(8.0),
-                                        height: 210.0,
-                                        decoration: BoxDecoration(color: Colors.white),
-                                        child:  ListView.builder(
-//                                        controller: leftScrollCtrl,
-                                          itemCount: _day.length*2 -1,
-                                          itemBuilder: (context, position) {
-                                            if(position.isEven){
-                                              int index = position~/2;
-                                              return GestureDetector(
-                                                behavior: HitTestBehavior.deferToChild,
-                                                child: Container(
-                                                  height: 36.0,
-                                                  alignment: Alignment.center,
-                                                  child: Text(
-                                                    _day[index].toString()+"日",
-                                                    style: TextStyle(color: this._d == _day[index]? Colors.blue :Color(0xFF000046), fontSize: 18),
-                                                    textAlign: TextAlign.start,
-                                                  ),
-                                                ),
-                                                onTap: (){
-                                                  setState((){
-                                                    this._d = _day[index];
-                                                    this.dayChoosed = true;
-                                                    print('now choose'+ this._d.toString() +_day[index].toString());
-                                                  });
-                                                },
-                                              );
-                                            }
-                                            else{
-                                              return Divider(height: 5,);
-                                            }
-                                          },
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
+                              child: CupertinoDatePicker(
+                                mode: CupertinoDatePickerMode.date, //日期时间模式，此处为日期模式
+                                onDateTimeChanged: (dateTime) { //日期改变时调用的方法
+                                  if (dateTime == null) {
+                                    return;
+                                  }
+                                  print('当前选择了：${dateTime.year}年${dateTime.month}月${dateTime.day}日');
+                                  setState(() {
+                                    this._birthdayChoosed = dateTime;
+                                  });
+                                },
+                                initialDateTime: DateTime.now(), //初始化展示时的日期时间
+                                minimumYear: 1970, //最小年份，只有mode为date时有效
+                                maximumYear: DateTime.now().year, //最大年份，只有mode为date时有效
                               ),
                             ),
                           ),
@@ -407,10 +287,154 @@ class EditInfoPageState extends State<EditInfoPage> with TickerProviderStateMixi
               autofocus: false,
             ),
           ),
+          new ListTile(
+            leading: Icon(Icons.calendar_today),
+            title: new Text('入学年份: '+ _enrollYear.toString(), style: TextStyle(color: Colors.grey)),
+            trailing: GestureDetector(
+              child: Icon(Icons.keyboard_arrow_right),
+              onTap: (){
+                showModalBottomSheet(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return Column(
+                        children: <Widget>[
+                          _renderTitleActionsView('选择入学年份'),               //确定，取消
+                          Expanded(
+                            child: Container(
+                              color: Colors.white,
+                              child: CupertinoPicker(
+                                  scrollController: enrollYearScrollController,
+                                  magnification:1.0, // 整体放大率
+                                  //offAxisFraction:10.0,// 球面效果的透视系数,消失点位置
+                                  itemExtent: 40,  // 所有子节点 统一高度
+//                                  useMagnifier:true,// 是否使用放大效果
+                                  onSelectedItemChanged: (position) {
+                                    print('The position is $position');
+                                    setState(() {
+                                      this._enrollYearChoosed = DateTime.now().year - 11 + position;
+                                    });
+                                  },
+                                children: List<Widget>.generate(12, (int index) {    //只能选择近12年的年份
+                                  return Center(child:
+                                  Text((DateTime.now().year - 11 + index).toString()+'年'),
+                                  );
+                                }),),
+                            ),
+                          ),
+                        ],
+                      );
+                    }
+                );
+              },
+            ),
+          ),
+          new ListTile(
+            leading: Icon(Icons.school),
+            title: new Text('所在院系: '+ _department, style: TextStyle(color: Colors.grey)),
+            trailing: GestureDetector(
+              child: Icon(Icons.keyboard_arrow_right),
+              onTap: (){
+                showModalBottomSheet(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return Column(
+                        children: <Widget>[
+                          _renderTitleActionsView('选择所在院系'),               //确定，取消
+                          Expanded(
+                            child: Container(
+                              color: Colors.white,
+                              child: CupertinoPicker(
+                                scrollController: enrollYearScrollController,
+//                                magnification:1.0, // 整体放大率
+                                //offAxisFraction:10.0,// 球面效果的透视系数,消失点位置
+                                itemExtent: 40,  // 所有子节点 统一高度
+//                                useMagnifier:true,// 是否使用放大效果
+                                onSelectedItemChanged: (position) {
+                                  setState(() {
+                                    this._departmentChoosed = Departments[position];
+                                  });
+                                },
+                                children: List<Widget>.generate(Departments.length, (int index) {
+                                  return Center(child:
+                                  Text(Departments[index]),
+                                  );
+                                }),),
+                            ),
+                          ),
+                        ],
+                      );
+                    }
+                );
+              },
+            ),
+          ),
+          new ListTile(
+            title: new TextField(
+              controller: _majorController,
+              keyboardType: TextInputType.text,
+              decoration: InputDecoration(
+                contentPadding: EdgeInsets.all(10.0),
+                icon: Icon(Icons.school),
+                labelText: '所在专业',
+                errorText: _snoErrMsg,
+              ),
+              //limit MAX input=20
+              autofocus: false,
+            ),
+          ),
 
           //个性资料
           new ListTile(
             title: new Text('个性资料'),
+          ),
+          new ListTile(
+            leading: Icon(Icons.calendar_today),
+            title: new Text('兴趣爱好: ', style: TextStyle(color: Colors.grey)),
+            trailing: GestureDetector(
+              child: Icon(Icons.keyboard_arrow_right),
+              onTap: (){
+                showModalBottomSheet(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return Column(
+                        children: <Widget>[
+                          _renderTitleActionsView('选择兴趣爱好'),               //确定，取消
+                          Expanded(
+                            child: Container(
+                              color: Colors.white,
+                              padding: EdgeInsets.all(8.0),
+                              height: 210.0,
+//                              decoration: BoxDecoration(color: Colors.white),
+                              child: ListView(
+                                children: List<Widget>.generate(hobbysCheck.length, (int index) {
+                                  return ListTile(
+                                    leading: Checkbox(
+                                      value: hobbysCheck[Hobbys[index]],
+                                      onChanged: (value) {
+                                        setState(() {
+                                          hobbysCheck[Hobbys[index]] = value;
+                                          if(hobbysCheck[Hobbys[index]] && !_hobbyChoosed.contains(Hobbys[index])){
+                                            _hobbyChoosed.add(Hobbys[index]);
+                                            print('当前选择是'+Hobbys[index]+ hobbysCheck[index].toString());
+                                          }
+                                        });
+                                      },
+                                      activeColor: Colors.red,
+                                      checkColor: Colors.blue,
+                                      tristate:true,
+                                    ),
+                                    title: Text(Hobbys[index]),
+                                  );
+                                }),
+                              ),
+                            ),
+                          ),
+                        ],
+                      );
+                    }
+                );
+              },
+            ),
           ),
         ],
       ),
@@ -453,7 +477,7 @@ class EditInfoPageState extends State<EditInfoPage> with TickerProviderStateMixi
   }
 
   //bottomSheet的头部
-  Widget _renderTitleActionsView() {
+  Widget _renderTitleActionsView(String title) {
     return Container(
       height: 44.0,
       decoration: BoxDecoration(
@@ -477,7 +501,7 @@ class EditInfoPageState extends State<EditInfoPage> with TickerProviderStateMixi
             ),
           ),
           Expanded(
-            child: Text('选择出生日期',textAlign: TextAlign.center,style: TextStyle(fontSize: 20.0),),
+            child: Text(title,textAlign: TextAlign.center,style: TextStyle(fontSize: 20.0),),
           ),
           Container(
             height: 44.0,
@@ -489,12 +513,28 @@ class EditInfoPageState extends State<EditInfoPage> with TickerProviderStateMixi
                 style: TextStyle(color: Colors.black, fontSize: 16),
               ),
               onPressed: () {
-                if( dayChoosed){
+                if(title=='选择出生日期'){
                   setState((){
-                    this.birthday = DateTime(_y,_m,_d);
+                    this.birthday = _birthdayChoosed;
                   });
-                  Navigator.pop(context);
                 }
+                else if(title=='选择入学年份'){
+                  setState(() {
+                    this._enrollYear = _enrollYearChoosed;
+                  });
+                }
+                else if(title=='选择所在院系'){
+                  setState(() {
+                    this._department = _departmentChoosed;
+                  });
+                }
+                else if(title=='选择兴趣爱好'){
+                  setState(() {
+                    this._hobby = _hobbyChoosed;
+                    print('当前选择是'+ _hobby.toString());
+                  });
+                }
+                Navigator.pop(context);
               },
             ),
           ),
@@ -505,7 +545,6 @@ class EditInfoPageState extends State<EditInfoPage> with TickerProviderStateMixi
 
   //判断当月天数
   List<int> _leapYearMonths = const <int>[1, 3, 5, 7, 8, 10, 12];
-
   int calcDateCount(int year, int month) {
     if (_leapYearMonths.contains(month)) {
       return 31;
@@ -518,5 +557,31 @@ class EditInfoPageState extends State<EditInfoPage> with TickerProviderStateMixi
     return 30;
   }
 }
+
+const List<String> Departments = <String>[
+  '信息与通信工程学院', '电子科学与工程学院', '材料与能源学院', '机械与电气工程学院', '光电科学与工程学院', '自动化工程学院',
+  '资源与环境学院', '计算机科学与工程学院', '信息与软件工程学院', '航空航天学院', '数学科学学院', '物理学院',
+  '医学院', '生命科学与技术学院', '经济与管理学院', '外国语学院', '马克思主义学院', '格拉斯哥学院',
+  '体育部', '基础与前沿科学院', '通信抗干扰技术国家级重点实验室', '英才实验学院', '其他学院',
+];
+
+const List<String> Hobbys = [
+  '电影', '追剧','游戏', '街机', '二次元',
+  '摄影', '数码', '睡觉', '宅家里', '绘画', '手工',
+  '书法', '写作', '魔术', '舞蹈', '表演', '曲艺',
+  '唱K', '听歌', '吉他', '钢琴', '小提琴', '键盘', '架子鼓',
+  '跑步', '健身', '排球','足球','篮球','羽毛球','网球','台球','溜冰', '滑板', '爬山',
+  '购物', '逛街', '旅游', '美妆', '美食', '烹饪', '烘焙', '雕刻', '设计'
+];
+
+//Map<String,bool> hobbysCheck = <String,bool>{
+//  '电影':false, '追剧':false,'游戏':false, '街机':false, '二次元':false,
+//  '摄影':false, '数码':false, '睡觉':false, '宅家里':false, '绘画':false, '手工':false,
+//  '书法':false, '写作':false, '魔术':false, '舞蹈':false, '表演':false, '曲艺':false,
+//  '唱K':false, '听歌':false, '吉他':false, '钢琴':false, '小提琴':false, '键盘':false, '架子鼓':false,
+//  '跑步':false, '健身':false, '排球':false,'足球':false,'篮球':false,'羽毛球':false,'网球':false,'台球':false,'溜冰':false, '滑板':false, '爬山':false,
+//  '购物':false, '逛街':false, '旅游':false, '美妆':false, '美食':false, '烹饪':false, '烘焙':false, '雕刻':false, '设计':false
+//};
+
 
 

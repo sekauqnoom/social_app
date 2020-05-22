@@ -24,7 +24,7 @@ import 'package:socialapp/pages/beforelogin/forget_password.dart';
 import 'package:socialapp/pages/beforelogin/register.dart';
 import 'package:socialapp/pages/beforelogin/login.dart';
 import 'package:socialapp/pages/afterlogin/Home/home_page.dart';
-import 'package:socialapp/pages/afterlogin/Home/more_events.dart';
+import 'package:socialapp/pages/afterlogin/Home/news_page.dart';
 import 'package:socialapp/pages/afterlogin/course_table.dart';
 import 'package:socialapp/pages/afterlogin/dynamics.dart';
 import 'package:socialapp/pages/afterlogin/message/add_friend.dart';
@@ -92,7 +92,7 @@ class SocialAppState extends State<SocialApp> with SingleTickerProviderStateMixi
           body: BottomMenuPage(),
         ),
         routes: {
-          "/moreEvents": (_) => MoreEventsPage(),
+          "/newsPage": (_) => NewsPage(),
           "/loginPage": (_) => LoginPage(),
           "/editInfo" : (_) => EditInfoPage(),
           "/settings":  (_) => SettingPage(),

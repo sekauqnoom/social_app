@@ -3,12 +3,12 @@ import 'package:socialapp/model/news/spider_news.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class MoreEventsPage extends StatefulWidget {
+class NewsPage extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => MoreEventsPageState();
+  State<StatefulWidget> createState() => NewsPageState();
 }
 
-class MoreEventsPageState extends State<MoreEventsPage> with SingleTickerProviderStateMixin{
+class NewsPageState extends State<NewsPage> with SingleTickerProviderStateMixin{
   ScrollController _scrollController;
 
   @override

@@ -49,7 +49,7 @@ class HomePageState extends State<HomePage> with SingleTickerProviderStateMixin{
         body: ListView(
           children: <Widget>[
             new GestureDetector(
-              onTap: () => Navigator.pushNamed(context, "/moreEvents", arguments: {
+              onTap: () => Navigator.pushNamed(context, "/newsPage", arguments: {
                 "newslist": newsList,
                 "newlength" :newsLength
               }),
@@ -57,20 +57,62 @@ class HomePageState extends State<HomePage> with SingleTickerProviderStateMixin{
                 elevation: 10.0,
                 margin: new EdgeInsets.only(left: 15.0, right: 15.0, top: 15.0),
                 color: Color.fromARGB(0, 255, 255, 255),
-                child: new Container(
-                  width: 400.0,
-                  height: 200.0,
-                  decoration: new BoxDecoration(
-                    color: Colors.white,
-                    image: new DecorationImage(
-                        image: new AssetImage("images/newsCard.png"),
-                        fit: BoxFit.cover),
-                    shape: BoxShape.rectangle, // <-- 这里需要设置为 rectangle
-                    borderRadius: new BorderRadius.all(
-                      const Radius.circular(
-                          15.0), // <-- rectangle 时，BorderRadius 才有效
+                child: Stack(
+                  children: <Widget>[
+                    new Container(
+                      width: 400.0,
+                      height: 200.0,
+                      decoration: new BoxDecoration(
+                        color: Colors.white,
+                        image: new DecorationImage(
+                            image: new AssetImage("images/newsCard.png"),
+                            fit: BoxFit.cover),
+                        shape: BoxShape.rectangle, // <-- 这里需要设置为 rectangle
+                        borderRadius: new BorderRadius.all(
+                          const Radius.circular(
+                              15.0), // <-- rectangle 时，BorderRadius 才有效
+                        ),
+                      ),
                     ),
-                  ),
+                    Positioned(
+                      right: 10.0,
+                      bottom: 32.0,
+                      child: Container(
+//                        width: 60.0,
+//                        height: 20.0,
+                        child: Text('校园时讯',
+                          style: TextStyle(
+                              color: Color.fromARGB(255, 119, 136, 213),
+                              fontSize: 30.0,
+                              fontWeight: FontWeight.w700),
+                        ),
+                        decoration: new BoxDecoration(
+                          color: Colors.white,
+                          shape: BoxShape.rectangle, // <-- 这里需要设置为 rectangle
+                          borderRadius: new BorderRadius.all(Radius.circular(5.0)), // <-- rectangle 时，BorderRadius 才有效
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      right: 10.0,
+                      bottom: 10.0,
+                      child: Container(
+                        width: 60.0,
+                        height: 20.0,
+                        child: Text('点击进入',textAlign: TextAlign.center, style: TextStyle(color: Colors.white),),
+                        decoration: new BoxDecoration(
+                          color: Color.fromARGB(255, 119, 136, 213),
+                          shape: BoxShape.rectangle, // <-- 这里需要设置为 rectangle
+                          borderRadius: new BorderRadius.all(Radius.circular(5.0)), // <-- rectangle 时，BorderRadius 才有效
+                        ),
+                      ),
+                    ),
+//                    new Padding(
+//                      // 分别指定四个方向的补白
+//                      padding: const EdgeInsets.fromLTRB(20.0, 16.0, 50.0, 50.0),
+//                      child: Text('点击进入',),
+//                    ),
+                  ],
                 ),
               ),
             ),
@@ -98,17 +140,27 @@ class HomePageState extends State<HomePage> with SingleTickerProviderStateMixin{
                       ),
                     ),
                     Positioned(
-                      top: 10,
-                      child: Text('学习资源',
-                        style: TextStyle(
-                            color: Color.fromARGB(255, 119, 136, 213),
-                            fontSize: 25.0,
-                            fontWeight: FontWeight.w700),
+                      right: 10.0,
+                      bottom: 32.0,
+                      child: Container(
+//                        width: 60.0,
+//                        height: 20.0,
+                        child: Text('学习资源',
+                          style: TextStyle(
+                              color: Color.fromARGB(255, 119, 136, 213),
+                              fontSize: 30.0,
+                              fontWeight: FontWeight.w700),
+                        ),
+                        decoration: new BoxDecoration(
+                          color: Colors.white,
+                          shape: BoxShape.rectangle, // <-- 这里需要设置为 rectangle
+                          borderRadius: new BorderRadius.all(Radius.circular(5.0)), // <-- rectangle 时，BorderRadius 才有效
+                        ),
                       ),
                     ),
                     Positioned(
-                      left: 10.0,
-                      top: 50.0,
+                      right: 10.0,
+                      bottom: 10.0,
                       child: Container(
                         width: 60.0,
                         height: 20.0,
