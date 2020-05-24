@@ -72,9 +72,7 @@ class DrawerPage extends Drawer {
               leading: new Icon(Icons.sync),
               onTap: () {
                 logOutDialog(context);
-                Scaffold.of(context).showSnackBar(new SnackBar(
-                  content: new Text("成功退出登录"),
-                ));
+
               } //点击后收起侧边栏
           ),
           //分割线控件
@@ -112,6 +110,9 @@ class DrawerPage extends Drawer {
                     Navigator.of(context).pushNamedAndRemoveUntil(
                         "/loginPage", (route) => route == null
                     );
+                    Scaffold.of(context).showSnackBar(new SnackBar(
+                      content: new Text("成功退出登录"),
+                    ));
                   },
                   child: Text('是')),
               FlatButton(
