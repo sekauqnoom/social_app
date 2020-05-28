@@ -1,7 +1,36 @@
 import 'package:flutter/material.dart';
 
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+final _firestore = Firestore.instance;
+FirebaseUser loggedInUser;
+
+//class DrawerPage extends StatefulWidget {
+//  @override
+//  State<StatefulWidget> createState() => DrawerPageState();
+//}
 //左侧菜单栏
 class DrawerPage extends Drawer {
+//  final _auth = FirebaseAuth.instance;
+//  @override
+//  void initState() {
+//    super.initState();
+//    getCurrentUser();
+//  }
+//
+//  void getCurrentUser() async {
+//    try {
+//      final user = await _auth.currentUser();
+//      if (user != null) {
+//        loggedInUser = user;
+//        print(loggedInUser.email);
+//      }
+//    } catch (e) {
+//      print(e);
+//    }
+//  }
+
   @override
   Widget build(BuildContext context) {
     return new Drawer(
@@ -72,7 +101,6 @@ class DrawerPage extends Drawer {
               leading: new Icon(Icons.sync),
               onTap: () {
                 logOutDialog(context);
-
               } //点击后收起侧边栏
           ),
           //分割线控件
@@ -113,6 +141,7 @@ class DrawerPage extends Drawer {
                     Scaffold.of(context).showSnackBar(new SnackBar(
                       content: new Text("成功退出登录"),
                     ));
+//                    _auth.signOut();
                   },
                   child: Text('是')),
               FlatButton(

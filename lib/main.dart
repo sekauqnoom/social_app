@@ -23,13 +23,14 @@ import 'package:socialapp/pages/beforelogin/find_password.dart';
 import 'package:socialapp/pages/beforelogin/forget_password.dart';
 import 'package:socialapp/pages/beforelogin/register.dart';
 import 'package:socialapp/pages/beforelogin/login.dart';
-import 'package:socialapp/pages/afterlogin/Home/home_page.dart';
-import 'package:socialapp/pages/afterlogin/Home/news_page.dart';
+import 'package:socialapp/pages/afterlogin/home/home_page.dart';
+import 'package:socialapp/pages/afterlogin/home/news_page.dart';
 import 'package:socialapp/pages/afterlogin/course_table.dart';
-import 'package:socialapp/pages/afterlogin/dynamics.dart';
-import 'package:socialapp/pages/afterlogin/message/add_friend.dart';
+import 'package:socialapp/pages/afterlogin/dynamics/dynamics.dart';
+import 'package:socialapp/pages/afterlogin/dynamics/write_something.dart';
+import 'package:socialapp/pages/afterlogin/friends/add_friend.dart';
 import 'package:socialapp/pages/afterlogin/message/chat_page.dart';
-import 'package:socialapp/pages/afterlogin/message/friends_list.dart';
+import 'package:socialapp/pages/afterlogin/friends/friends_list.dart';
 import 'package:socialapp/pages/afterlogin/message/message_list.dart';
 import 'package:socialapp/pages/afterlogin/me/drawer.dart';
 import 'package:socialapp/pages/afterlogin/me/edit_Info.dart';
@@ -88,15 +89,20 @@ class SocialAppState extends State<SocialApp> with SingleTickerProviderStateMixi
         ),
         home: new Scaffold(
           key: _scaffoldKey,
-          drawer: DrawerPage(),
-          body: BottomMenuPage(),
+          body: LoginPage(),
         ),
         routes: {
-          "/newsPage": (_) => NewsPage(),
           "/loginPage": (_) => LoginPage(),
+          "/registerPage": (_) => RegisterPage(),
+          "/forgetPage": (_) => ForgetPasswordPage(),
+          "/findpasswordpage":(_)=> FindPasswordPage(),
+
           "/editInfo" : (_) => EditInfoPage(),
           "/settings":  (_) => SettingPage(),
+          "/newsPage": (_) => NewsPage(),
           "/resource": (_) => ResourcePage(),
+          "/bottomMenu": (_) => BottomMenuPage(),
+          "/writeSomething": (_) => WritePage(),
         },
       ),
     );
