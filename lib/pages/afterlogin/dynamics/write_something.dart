@@ -1,97 +1,45 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
-//import 'package:image_picker/image_picker.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:camera/camera.dart';
+import 'dart:ui';
+import 'package:flutter/widgets.dart';
+import 'package:async/async.dart';
+
 //import 'imagePicker.dart';
 //import 'camera_screen.dart';
-//import 'package:camera/camera.dart';
+
+const int maxCount = 9;
+enum PickImageType {
+  gallery,
+  camera,
+}
 
 class WritePage extends StatefulWidget {
-//  final String orderNo; //退车单号
-//  final String customerName; // 客户名
-//  const WritePage({Key key, this.orderNo, this.customerName})
-//      : super(key: key);
   @override
   WritePageState createState() => WritePageState();
 }
 
 class WritePageState extends State<WritePage> {
-//  TextEditingController _licenseController = new TextEditingController();
-//  TextEditingController _kmController = new TextEditingController();
-//  final FocusNode _nodeLicense = FocusNode();
-//  final FocusNode _nodeKm = FocusNode();
-//  Widget _getBody() {
-//    return Container(
-//        child: Column(
-//          crossAxisAlignment: CrossAxisAlignment.stretch,
-//          children: <Widget>[
-//            Expanded(
-//                child: ListView(
-//                  children: <Widget>[
-//
-//                    SizedBox(
-//                      height: 10,
-//                    ),
-//                    UcarImagePicker(
-//                      maxCount: 3,
-//                      title: '上传图片测试1',
-//                    ),
-//                    Divider(
-//                      height: 1,
-//                    ),
-//                    UcarImagePicker(
-//                      maxCount: 5,
-//                      title: '上传图片测试222',
-//                    ),
-//                  ],
-//                )),
-//            SafeArea(
-//              child: MaterialButton(
-//                height: 46,
-//                color: Color(0xFFF12E49),
-//                textColor: Colors.white,
-//                child: Text(
-//                  "立即开始",
-//                  style: TextStyle(
-//                    color: Colors.white,
-//                    fontSize: 15.0,
-//                  ),
-//                ),
-//                onPressed: ()  async {
-//                  final cameras = await availableCameras();
-//
-//                  // Get a specific camera from the list of available cameras.
-//                  final firstCamera = cameras.first;
-//                  Navigator.push(context, MaterialPageRoute(
-//                      builder: (context) {
-//                        return TakePictureScreen(camera:firstCamera,);
-//                      }
-//                  ));
-//                },
-//              ),
-//            )
-//          ],
-//        ));
-//  }
-//
-//  _listener() {
-//
-//    print("${_kmController.text}");
-//    print("${_licenseController.text}");
-//  }
-//
-//  @override
-//  void initState() {
-//    // TODO: implement initState
-//    super.initState();
-//    _licenseController.addListener(_listener);
-//    _kmController.addListener(_listener);
-//  }
   TextEditingController _textEditingController;
+  List _images = []; //保存添加的图片
+  int currentIndex = 0;
+  bool isDelete = false;
 
   @override
   void initState() {
     super.initState();
+    _images.add(UploadImageItem(
+      callBack: (int i) {
+        if (i == 0) {
+          print('打开相机');
+          _getImage(PickImageType.camera);
+        } else {
+          print('打开相册');
+          _getImage(PickImageType.gallery);
+        }
+      },
+    ));
   }
 
   @override
@@ -111,29 +59,328 @@ class WritePageState extends State<WritePage> {
               },
             ),
             title: Text('发表动态'),
+            actions: <Widget>[
+              SizedBox(
+                child: RaisedButton(
+                  color: Colors.blue,
+                  highlightColor: Colors.blue[700],
+                  colorBrightness: Brightness.dark,
+                  splashColor: Colors.grey,
+                  child: Text('发表', style: TextStyle(fontSize: 16)),
+                  shape:RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+//                onPressed: (){},
+                  onPressed: () => onPressed(_textEditingController.text),
+                ),
+                height: 32,
+                width: 76,
+              ),
+            ],
           ),
             body: Column(
               children: <Widget>[
                 Container(
                   child: TextField(
                     controller: _textEditingController,
+                    maxLength: 300,
+                    maxLines: 5,
+                    style: TextStyle(fontSize: 20.0),
+                    keyboardType: TextInputType.multiline,    //多行文本
                     decoration: InputDecoration(
-                      icon: Container(
-                          padding: EdgeInsets.only(left: 10),
-                          child: Icon(Icons.edit)
-                      ),
-//                      contentPadding: EdgeInsets.fromLTRB(0, 0, 0, 13),
+//                      icon: Container(
+//                          padding: EdgeInsets.only(top: 0),
+//                          child: Icon(Icons.edit)
+//                      ),
+                      contentPadding: EdgeInsets.fromLTRB(5, 0, 0, 13),
                       border: InputBorder.none,
                       hintText: "记录此刻的想法...",
 //                      hintStyle: TextStyle(),
                     ),
                   ),
-                  height: 300,
                 ),
+                Divider(
+                  height: 1,
+                ),
+                Container(
+                  width: double.infinity,
+                  color: Colors.white,
+                  padding: EdgeInsets.only(top: 14, left: 20, bottom: 20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      SizedBox(
+                        height: 8,
+                      ),
+                      Wrap(
+                        alignment: WrapAlignment.start,
+                        runSpacing: 10,
+                        spacing: 10,
+                        children: List.generate(_images.length, (i) {
+                          return _images[i];
+                        }),
+                      )
+                    ],
+                  ),
+                )
               ],
             ),
 
 //          body: _getBody(),
         );
+  }
+
+  _getImage(PickImageType type) async {
+    var image = await ImagePicker.pickImage(
+        source: type == PickImageType.gallery
+            ? ImageSource.gallery
+            : ImageSource.camera);
+    UploadImageItem();
+    setState(() {
+      print('add image at $currentIndex');
+      _images.insert(
+          _images.length - 1,
+          UploadImageItem(
+            imageModel: UploadImageModel(image, currentIndex),
+            deleteFun: (UploadImageItem item) {
+              print('remove image at ${item.imageModel.imageIndex}');
+              bool result = _images.remove(item);
+              print('left is ${_images.length}');
+              if (_images.length == maxCount -1 && isDelete == false) {
+                isDelete = true;
+                _images.add(UploadImageItem(
+                  callBack: (int i) {
+                    if (i == 0) {
+                      print('打开相机');
+                      _getImage(PickImageType.camera);
+                    } else {
+                      print('打开相册');
+                      _getImage(PickImageType.gallery);
+                    }
+                  },
+                ));
+              }
+              print('remove result is $result');
+              setState(() {});
+            },
+          ));
+      currentIndex++;
+      if (_images.length == maxCount + 1) {
+        _images.removeLast();
+        isDelete = false;
+      }
+    });
+  }
+
+  /*拍照*/
+  _takePhoto() async {
+    var image = await ImagePicker.pickImage(source: ImageSource.camera);
+    UploadImageItem();
+    setState(() {
+      _images.insert(
+          _images.length - 1,
+          UploadImageItem(
+            imageModel: UploadImageModel(image, currentIndex),
+          ));
+    });
+  }
+
+  /*相册*/
+  _openGallery() async {
+    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+    _images.insert(
+        _images.length - 1,
+        UploadImageItem(
+          imageModel: UploadImageModel(image, currentIndex),
+        ));
+
+    setState(() {});
+  }
+
+   void onPressed(String text){
+    if(text != null){
+      print('发表成功');
+    }
+    else
+      return;
+  }
+}
+
+class UploadImageModel {
+  final File imageFile;
+  final int imageIndex;
+
+  UploadImageModel(this.imageFile, this.imageIndex);
+}
+
+class UploadImageItem extends StatelessWidget {
+  final GestureTapCallback onTap;
+  final Function callBack;
+  final UploadImageModel imageModel;
+  final Function deleteFun;
+  UploadImageItem({this.onTap, this.callBack, this.imageModel, this.deleteFun});
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        width: 115,
+        height: 115,
+        child: Stack(
+          alignment: Alignment.topRight,
+          children: <Widget>[
+            Container(
+                margin: EdgeInsets.only(top: 8, right: 8),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(3),
+                    color: Color(0xFFF0F0F0)),
+                child: imageModel == null
+                    ? InkWell(
+                    onTap: onTap ??
+                            () {
+                          BottomActionSheet.show(context, [
+                            '相机',
+                            '相册',
+                          ], callBack: (i) {
+                            callBack(i);
+
+                            return;
+                          });
+                        },
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Center(
+                          child: Image.asset('images/image_picker.png',),
+                        ),
+                        Text('上传', style: TextStyle(fontSize: 12, color: Color(0xff999999)),)
+                      ],
+                    ))
+                    : Image.file(
+                  imageModel.imageFile,
+                  width: 105,
+                  height: 105,
+                )),
+            Offstage(
+              offstage: (imageModel == null),
+              child: InkWell(
+                highlightColor: Colors.transparent,
+                splashColor: Colors.transparent,
+                child: Image.asset(
+                  'images/delete_pic.png',
+                  width: 16.0,
+                  height: 16.0,
+                ),
+                onTap: () {
+                  print('点击了删除');
+                  if (imageModel != null) {
+                    deleteFun(this);
+                  }
+                },
+              ),
+            ),
+          ],
+        ));
+  }
+}
+
+class BottomActionSheet {
+  static show(BuildContext context, List<String> data,
+      {String title, Function callBack(int)}) {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext context) {
+          return SafeArea(
+            child: Container(
+              color: Color.fromRGBO(114, 114, 114, 1),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  //为了防止控件溢出
+                  Flexible(
+                      child: Container(
+                        margin: EdgeInsets.only(left: 10, right: 10),
+                        decoration: new BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: new BorderRadius.all(Radius.circular(14)),
+                        ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            title != null
+                                ? Container(
+                              height: 40,
+                              alignment: Alignment.center,
+                              child: new Text(
+                                title,
+                                textAlign: TextAlign.center,
+                              ),
+                            )
+                                : Container(),
+                            Divider(
+                              height: 1,
+                              color: Color(0xFF3F3F3F),
+                            ),
+                            Flexible(
+                                child: ListView.builder(
+                                  /**
+                                      If you do not set the shrinkWrap property, your ListView will be as big as its parent.
+                                      If you set it to true, the list will wrap its content and be as big as it children allows it to be. */
+                                  shrinkWrap: true,
+                                  itemCount: data.length,
+                                  itemBuilder: (context, index) {
+                                    return Column(
+                                      children: <Widget>[
+                                        new ListTile(
+                                          onTap: () {
+                                            //点击取消 弹层消失
+                                            Navigator.pop(context);
+                                            callBack(index);
+                                          },
+                                          title: new Text(
+                                            data[index],
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ),
+                                        index == data.length - 1
+                                            ? Container()
+                                            : Divider(
+                                          height: 1,
+                                          color: Color(0xFF3F3F3F),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                )),
+                          ],
+                        ),
+                      )),
+                  SizedBox(
+                    height: 9,
+                  ),
+                  Container(
+                    height: 56,
+                    width: double.infinity,
+                    margin: EdgeInsets.only(left: 10, right: 10, bottom: 10),
+                    alignment: Alignment.center,
+                    decoration: new BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: new BorderRadius.all(Radius.circular(14)),
+                    ),
+                    child: InkWell(
+                      onTap: () {
+                        //点击取消 弹层消失
+                        Navigator.pop(context);
+                      },
+                      child: Text('取消',
+                          textAlign: TextAlign.center,
+                          style: new TextStyle(
+                            color: Color(0xFF007AFF),
+                            fontSize: 17.0,
+                          )),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
   }
 }
