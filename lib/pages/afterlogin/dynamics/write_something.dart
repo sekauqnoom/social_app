@@ -87,14 +87,22 @@ class WritePageState extends State<WritePage> {
 //    _licenseController.addListener(_listener);
 //    _kmController.addListener(_listener);
 //  }
+  TextEditingController _textEditingController;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _textEditingController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-        onTap: () {
-          FocusScope.of(context).requestFocus(FocusNode());
-        },
-        child: Scaffold(
+    return Scaffold(
           appBar: AppBar(
             leading: GestureDetector(
               child: Icon(Icons.arrow_back),
@@ -102,10 +110,30 @@ class WritePageState extends State<WritePage> {
                 Navigator.pop(context);
               },
             ),
+            title: Text('发表动态'),
           ),
-            body: Text(''),
+            body: Column(
+              children: <Widget>[
+                Container(
+                  child: TextField(
+                    controller: _textEditingController,
+                    decoration: InputDecoration(
+                      icon: Container(
+                          padding: EdgeInsets.only(left: 10),
+                          child: Icon(Icons.edit)
+                      ),
+//                      contentPadding: EdgeInsets.fromLTRB(0, 0, 0, 13),
+                      border: InputBorder.none,
+                      hintText: "记录此刻的想法...",
+//                      hintStyle: TextStyle(),
+                    ),
+                  ),
+                  height: 300,
+                ),
+              ],
+            ),
 
 //          body: _getBody(),
-        ));
+        );
   }
 }

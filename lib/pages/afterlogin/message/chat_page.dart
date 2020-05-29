@@ -9,16 +9,6 @@ class ChatPage extends StatefulWidget {
 }
 
 class ChatPageState extends State<ChatPage> {
-//  @override
-//  Widget build(BuildContext context){
-//    return Scaffold(
-//      appBar: AppBar(
-//        automaticallyImplyLeading: false,
-//        title: Text("我", textAlign:TextAlign.start,style: TextStyle(fontSize: 28.0,),),
-//      ),
-//      body:Text(""),
-//    );
-//  }
   String nikeName;
   String inputValue = 'ces';
   ChatPageState(this.nikeName);
@@ -44,28 +34,63 @@ class ChatPageState extends State<ChatPage> {
                     },
                     itemCount: items.length,
                   )),
-              new Divider(
-                height: 5,
-              ),
-              new SafeArea(
+              new Container(
+                height: 60,
                 child: Container(
-                  child: new Row(
+                  child: Row(
                     children: <Widget>[
-                      new Expanded(
-                          child: new TextField(
-                            decoration: new InputDecoration(
-                              hintText: '    请输入内容',
+//                      Expanded(
+//                        flex: 1,
+//                        child: Container(
+//                          margin: EdgeInsets.only(left: 10),
+//                          decoration: BoxDecoration(
+//                            borderRadius: BorderRadius.circular(14),
+//                            border: Border.fromBorderSide(BorderSide(width: 2)),
+//                          ),
+//                          child: Icon(
+//                            Icons.keyboard_voice,
+//                            color: Colors.black,
+//                            size: 25,
+//                          ),
+//                        ),
+//                      ),
+                      Expanded(
+                          flex: 7,
+                          child: Container(
+                            height: 40,
+                            padding: EdgeInsets.only(top: 5, bottom: 5,),
+                            margin: EdgeInsets.only(left: 10),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(7),
                             ),
-                            maxLength: 200,
-                            onChanged: _onInputTextChange,
-                            controller: textEditingController,
+                            child: TextField(
+                              controller: textEditingController,
+                              onChanged: _onInputTextChange,
+
+                              autofocus: false,
+                              maxLines: 1,
+                              style: TextStyle(
+                                fontSize: 18,
+                                color: Colors.black87,
+                              ),
+                              decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.fromLTRB(0, 0, 0, 13),
+                                  border: InputBorder.none,
+                                  hintText: '请输入内容',
+                                  hintStyle: TextStyle(fontSize: 15,)
+                              ),
+                            ),
                           )),
-                      new FlatButton(
-                        color: Colors.blue,
-                        disabledTextColor: Colors.blue,
-                        child: new Text('发送'),
-                        onPressed: _sendMsg,
-                      )
+                      Expanded(
+                        flex: 2,
+                        child: FlatButton(
+                          color: Colors.blue,
+                          disabledTextColor: Colors.blue,
+                          child: new Text('发送'),
+                          onPressed: _sendMsg,
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -143,64 +168,54 @@ class _ChatListViewState extends State<ChatListView> {
 
   Widget getItem() {
     if (item.type == 0) {
-      return Column(
-        children: <Widget>[
-          new Container(
-//          height: 100,
-              width: MediaQuery.of(context).size.width * 0.9,
-              child: new Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: <Widget>[
-                  new Expanded(
-                    child: new Container(
-//                      width: MediaQuery.of(context).size.width * 0.8,
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey, width: 1.0),
-                      ),
-                      child: new Text(
-                        item.msg,
-                        textAlign: TextAlign.right,
-                        style: TextStyle(color: Colors.black),
-                      ),
+      return new Container(
+          child: new Row(
+            children: <Widget>[
+              new Expanded(
+                child: Container(
+                    child: new Text(
+                      item.msg,
+                      textAlign: TextAlign.right,
+                      style: TextStyle(color: Colors.black, fontSize: 16),
+                    ),
+                  decoration: BoxDecoration(
+                    borderRadius:BorderRadius.all(Radius.circular(8.0)),
+                    border: Border.all(
+                        color: Colors.grey,
+//                width: 5.0,
+                        style: BorderStyle.solid
                     ),
                   ),
-                  new Image.asset(defaultAvatar, width: 44.0, height: 44.0),
-                ],
-              )
+                ),
+              ),
+              new Image.asset(defaultAvatar, width: 36.0, height: 36.0),
+            ],
           ),
-          new Divider(
-            height: 5,
-          )
-        ],
       );
     } else {
-      return Column(
-        children: <Widget>[
-          new Container(
-            width: MediaQuery.of(context).size.width * 0.9,
-            child: new Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                new Image.asset(defaultAvatar, width: 44.0, height: 44.0),
-                new Expanded(
-                    child: Container(
-                      child: new Text(
-                        item.msg,
-                        textAlign: TextAlign.left,
-                        style: TextStyle(color: Colors.red),
-                      ),
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey, width: 1.0),
-                      ),
+      return new Container(
+        child: new Row(
+          children: <Widget>[
+            new Image.asset(defaultAvatar, width: 36.0, height: 36.0),
+            new Expanded(
+                child: Container(
+                  child: Text(
+                  item.msg,
+                  textAlign: TextAlign.left,
+                  style: TextStyle(color: Colors.red, fontSize: 16),
+                  ),
+                  decoration: BoxDecoration(
+                    borderRadius:BorderRadius.all(Radius.circular(8.0)),
+                    border: Border.all(
+                        color: Colors.grey,
+//                width: 5.0,
+                        style: BorderStyle.solid
                     ),
+                  ),
                 )
-              ],
-            ),
-          ),
-          new Divider(
-            height: 5,
-          )
-        ],
+            )
+          ],
+        ),
       );
     }
   }

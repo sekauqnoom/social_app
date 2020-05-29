@@ -4,7 +4,7 @@ import 'package:socialapp/pages/afterlogin/me/drawer.dart';
 import 'package:socialapp/pages/afterlogin/course_table.dart';
 import 'package:socialapp/pages/afterlogin/dynamics/dynamics.dart';
 import 'package:socialapp/pages/afterlogin/message/message_list.dart';
-import 'package:socialapp/pages/afterlogin/friends/friends_list.dart';
+import 'package:socialapp/pages/afterlogin/friends/contact_page.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -40,7 +40,7 @@ class BottomMenuPageState extends State<BottomMenuPage> with SingleTickerProvide
 
   @override
   Widget build(BuildContext context){
-    List<Widget> viewList = [HomePage(), CoursePage(), MessagePage(), FriendsPage(), DynamicsPage()];
+    List<Widget> viewList = [HomePage(), CoursePage(), MessagePage(), ContactPage(), DynamicsPage()];
 
     return Container(
       child: Scaffold(
