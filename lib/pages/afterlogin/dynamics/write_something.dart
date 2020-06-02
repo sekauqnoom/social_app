@@ -5,9 +5,10 @@ import 'package:camera/camera.dart';
 import 'dart:ui';
 import 'package:flutter/widgets.dart';
 import 'package:async/async.dart';
+import 'package:provider/provider.dart';
 
-//import 'imagePicker.dart';
-//import 'camera_screen.dart';
+import 'package:socialapp/model/shared_dynamics/dynamic_model.dart';
+import 'package:socialapp/model/shared_dynamics/dynamic_count.dart';
 
 const int maxCount = 9;
 enum PickImageType {
@@ -21,10 +22,13 @@ class WritePage extends StatefulWidget {
 }
 
 class WritePageState extends State<WritePage> {
-  TextEditingController _textEditingController;
-  List _images = []; //保存添加的图片
+  TextEditingController _textEditingController  = TextEditingController();
+  List _images = []; //保存添加的图片(带有删除按钮的组件)
+  List photos = [];   //Image组件
+  List photoUrls = [];
   int currentIndex = 0;
   bool isDelete = false;
+  String datetime;
 
   @override
   void initState() {
@@ -44,7 +48,7 @@ class WritePageState extends State<WritePage> {
 
   @override
   void dispose() {
-    _textEditingController.dispose();
+//    _textEditingController.dispose();
     super.dispose();
   }
 
@@ -60,71 +64,100 @@ class WritePageState extends State<WritePage> {
             ),
             title: Text('发表动态'),
             actions: <Widget>[
-              SizedBox(
-                child: RaisedButton(
-                  color: Colors.blue,
-                  highlightColor: Colors.blue[700],
-                  colorBrightness: Brightness.dark,
-                  splashColor: Colors.grey,
-                  child: Text('发表', style: TextStyle(fontSize: 16)),
-                  shape:RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
-//                onPressed: (){},
-                  onPressed: () => onPressed(_textEditingController.text),
+              Consumer<DynamicCounter>(
+                builder: (context, counter, child) => SizedBox(
+                  child: RaisedButton(
+                    color: Colors.blue,
+                    highlightColor: Colors.blue[700],
+                    colorBrightness: Brightness.dark,
+                    splashColor: Colors.grey,
+                    child: Text('发表', style: TextStyle(fontSize: 16)),
+                    shape:RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+                    onPressed: (){
+                      if(_textEditingController.text != null || photos.length != 0){
+                        if(DateTime.now().minute>=0 && DateTime.now().minute<10){
+                          datetime = DateTime.now().month.toString()+'月'+DateTime.now().day.toString()+'日 '
+                              +DateTime.now().hour.toString()+':0'+DateTime.now().minute.toString();
+                        }
+                        else{
+                          datetime = DateTime.now().month.toString()+'月'+DateTime.now().day.toString()+'日 '
+                              + DateTime.now().hour.toString()+':'+DateTime.now().minute.toString();
+                        }
+                        counter.addDynamic(Dynamic('1', _textEditingController.text, datetime, photos, photoUrls));
+                        print('发表成功');
+                        Navigator.pop(context);
+                      }
+                      else{
+                        showDialog(
+                            context: context,
+                            builder: (_) =>
+                                AlertDialog(
+                                  title: Text("Alert"),
+                                  content: Text("Failed to add a card!"),
+                                )
+                        );
+                      }
+                    },
+                  ),
+                  height: 32,
+                  width: 76,
                 ),
-                height: 32,
-                width: 76,
               ),
             ],
           ),
-            body: Column(
-              children: <Widget>[
-                Container(
-                  child: TextField(
-                    controller: _textEditingController,
-                    maxLength: 300,
-                    maxLines: 5,
-                    style: TextStyle(fontSize: 20.0),
-                    keyboardType: TextInputType.multiline,    //多行文本
-                    decoration: InputDecoration(
+            body: new SingleChildScrollView(
+              child: new ConstrainedBox(
+                constraints: new BoxConstraints(minHeight: 120.0,),
+                child: Column(
+                  children: <Widget>[
+                    Container(
+                      child: TextField(
+                        controller: _textEditingController,
+                        maxLength: 300,
+                        maxLines: 5,
+                        style: TextStyle(fontSize: 20.0),
+                        keyboardType: TextInputType.multiline,    //多行文本
+                        decoration: InputDecoration(
 //                      icon: Container(
 //                          padding: EdgeInsets.only(top: 0),
 //                          child: Icon(Icons.edit)
 //                      ),
-                      contentPadding: EdgeInsets.fromLTRB(5, 0, 0, 13),
-                      border: InputBorder.none,
-                      hintText: "记录此刻的想法...",
+                          contentPadding: EdgeInsets.fromLTRB(5, 0, 0, 13),
+                          border: InputBorder.none,
+                          hintText: "记录此刻的想法...",
 //                      hintStyle: TextStyle(),
-                    ),
-                  ),
-                ),
-                Divider(
-                  height: 1,
-                ),
-                Container(
-                  width: double.infinity,
-                  color: Colors.white,
-                  padding: EdgeInsets.only(top: 14, left: 20, bottom: 20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-                      SizedBox(
-                        height: 8,
+                        ),
                       ),
-                      Wrap(
-                        alignment: WrapAlignment.start,
-                        runSpacing: 10,
-                        spacing: 10,
-                        children: List.generate(_images.length, (i) {
-                          return _images[i];
-                        }),
-                      )
-                    ],
-                  ),
-                )
-              ],
-            ),
-
+                    ),
+                    Divider(
+                      height: 1,
+                    ),
+                    Container(
+                      width: double.infinity,
+                      color: Colors.white,
+                      padding: EdgeInsets.only(top: 14, left: 20, bottom: 20),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          SizedBox(
+                            height: 8,
+                          ),
+                          Wrap(
+                            alignment: WrapAlignment.start,
+                            runSpacing: 10,
+                            spacing: 10,
+                            children: List.generate(_images.length, (i) {
+                              return _images[i];
+                            }),
+                          )
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            )
 //          body: _getBody(),
         );
   }
@@ -163,6 +196,12 @@ class WritePageState extends State<WritePage> {
               setState(() {});
             },
           ));
+      photoUrls.add(image);
+      photos.add(Image.file(
+        image,
+        width: 105,
+        height: 105,
+      ));
       currentIndex++;
       if (_images.length == maxCount + 1) {
         _images.removeLast();
@@ -194,14 +233,6 @@ class WritePageState extends State<WritePage> {
         ));
 
     setState(() {});
-  }
-
-   void onPressed(String text){
-    if(text != null){
-      print('发表成功');
-    }
-    else
-      return;
   }
 }
 

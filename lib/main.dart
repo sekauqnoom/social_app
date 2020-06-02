@@ -26,7 +26,7 @@ import 'package:socialapp/pages/beforelogin/login.dart';
 import 'package:socialapp/pages/afterlogin/home/home_page.dart';
 import 'package:socialapp/pages/afterlogin/home/news_page.dart';
 import 'package:socialapp/pages/afterlogin/course_table.dart';
-import 'package:socialapp/pages/afterlogin/dynamics/dynamics.dart';
+import 'package:socialapp/pages/afterlogin/dynamics/dynamics_page.dart';
 import 'package:socialapp/pages/afterlogin/dynamics/write_something.dart';
 import 'package:socialapp/pages/afterlogin/friends/add_friend.dart';
 import 'package:socialapp/pages/afterlogin/message/chat_page.dart';
@@ -77,7 +77,7 @@ class SocialAppState extends State<SocialApp> with SingleTickerProviderStateMixi
         ChangeNotifierProvider(builder: (context) => HobbyCounter(),),
         ChangeNotifierProvider(builder: (context) => Contact(),),
         ChangeNotifierProvider(builder: (context) => ContactCounter(),),
-        ChangeNotifierProvider(builder: (context) => Dynamic(),),
+//        ChangeNotifierProvider(builder: (context) => Dynamic(),),
         ChangeNotifierProvider(builder: (context) => DynamicCounter(),),
 //        ChangeNotifierProvider(builder: (context) => News(),),
       ],

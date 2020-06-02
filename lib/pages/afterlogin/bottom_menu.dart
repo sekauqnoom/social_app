@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:socialapp/pages/afterlogin/Home/home_page.dart';
 import 'package:socialapp/pages/afterlogin/me/drawer.dart';
 import 'package:socialapp/pages/afterlogin/course_table.dart';
-import 'package:socialapp/pages/afterlogin/dynamics/dynamics.dart';
+import 'package:socialapp/pages/afterlogin/dynamics/dynamics_page.dart';
 import 'package:socialapp/pages/afterlogin/message/message_list.dart';
 import 'package:socialapp/pages/afterlogin/friends/contact_page.dart';
 

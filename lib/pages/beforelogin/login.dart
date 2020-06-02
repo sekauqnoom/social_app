@@ -134,7 +134,7 @@ class LoginPageState extends State<LoginPage> {
                 children: <Widget>[
                   _accountTextField,
                   _passwordTextField,
-                Flex(
+                  Flex(
                   direction: Axis.horizontal,
                   children: <Widget>[
                     Checkbox(
