@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class Phonebook extends ChangeNotifier{
+class Contact extends ChangeNotifier{
   String _userId;
   String _friendTel;
 
