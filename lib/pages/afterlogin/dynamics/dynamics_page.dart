@@ -81,7 +81,7 @@ class DynamicsPageState extends State<DynamicsPage> {
                         ),
                       ),
                       new Text(
-                        '用户名    ',
+                        currentDynamic.userName + '    ',
                         style: new TextStyle(
                             color: Colors.black, fontSize: 25.0),
                       ),
@@ -94,7 +94,7 @@ class DynamicsPageState extends State<DynamicsPage> {
                   ),
                   Container(
                     alignment: Alignment.topLeft,
-                    margin: EdgeInsets.only(top: 15.0),
+                    margin: EdgeInsets.only(top: 10.0),
                     child: Text(currentDynamic.text, style: TextStyle(fontSize: 20.0), textAlign: TextAlign.left,),
                   ),
                   Divider(
@@ -130,6 +130,9 @@ class DynamicsPageState extends State<DynamicsPage> {
                         ],
                       ),
                     ),
+                  ),
+                  Divider(
+                    height: 1,
                   ),
                 ],
               ),

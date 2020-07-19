@@ -10,13 +10,13 @@ class EditInfoPage extends StatefulWidget {
 }
 
 class EditInfoPageState extends State<EditInfoPage> with TickerProviderStateMixin{
-  String _userId = "啦啦啦";
-  String _name = "哈哈哈";
+  String _userId = "糖醋丸子";
+  String _name = "林燕玲";
   String _gender = "女";
   DateTime _birthday = DateTime(2000,7,13);
   DateTime _birthdayChoosed;
 
-  String _sno ="290831";
+  String _sno ="2018091605026";
   int _enrollYear = 2018;
   int _enrollYearChoosed;
   String _department = "信软";

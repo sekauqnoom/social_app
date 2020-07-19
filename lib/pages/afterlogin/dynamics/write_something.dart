@@ -83,7 +83,8 @@ class WritePageState extends State<WritePage> {
                         datetime = DateTime.now().month.toString()+'月'+DateTime.now().day.toString()+'日 '
                             + DateTime.now().hour.toString()+':'+DateTime.now().minute.toString();
                       }
-                      counter.addDynamic(Dynamic('1', _textEditingController.text, datetime, photos, photoUrls));
+
+                      counter.addDynamic(Dynamic('我', _textEditingController.text, datetime, photos, photoUrls));
                       print('发表成功');
                       Navigator.pop(context);
                     }
@@ -197,6 +198,9 @@ class WritePageState extends State<WritePage> {
             },
           ));
       photoUrls.add(image);
+      print("photo's url: ");
+      print(image);
+
       photos.add(Image.file(
         image,
         width: 105,

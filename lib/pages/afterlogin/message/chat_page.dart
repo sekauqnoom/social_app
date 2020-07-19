@@ -2,21 +2,37 @@ import 'package:flutter/material.dart';
 
 class ChatPage extends StatefulWidget {
   String nikeName;
+  String imgUrl;
+  String lastMsg;
+  ChatPage(this.imgUrl,this.nikeName, this.lastMsg);
+
   String inputValue;
-  ChatPage(this.nikeName);
+
   @override
-  State<StatefulWidget> createState() => ChatPageState(nikeName);
+  State<StatefulWidget> createState() => ChatPageState(imgUrl, nikeName, lastMsg);
 }
 
 class ChatPageState extends State<ChatPage> {
   String nikeName;
+  String imgUrl;
+  String lastMsg;
+  ChatPageState(this.imgUrl, this.nikeName,this.lastMsg);
+
   String inputValue = 'ces';
-  ChatPageState(this.nikeName);
+
   TextEditingController textEditingController = new TextEditingController();
-  List<ChatItem> items = new List();
+  List<ChatItem> items = [];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    items.add(ChatItem(lastMsg, 1));
+  }
 
   @override
   Widget build(BuildContext context) {
+
     // TODO: implement build
     return Scaffold(
         appBar: AppBar(
@@ -30,7 +46,43 @@ class ChatPageState extends State<ChatPage> {
               new Expanded(
                   child: new ListView.builder(
                     itemBuilder: (context, i) {
-                      return ChatListView(items[i]);
+//                      if(i == 0){
+//                        return new Container(
+//                          child: Column(
+//                            children: <Widget>[
+//                              new Row(
+//                                children: <Widget>[
+//                                  new Image.asset(imgUrl, width: 36.0, height: 36.0),
+//                                  new Expanded(
+//                                      child: Container(
+//                                        height: 50,
+//                                        child: Text(
+//                                          lastMsg,
+//                                          textAlign: TextAlign.left,
+//                                          style: TextStyle(color: Colors.red, fontSize: 16),
+//                                        ),
+//                                        decoration: BoxDecoration(
+//                                          borderRadius:BorderRadius.all(Radius.circular(8.0)),
+//                                          border: Border.all(
+//                                              color: Colors.grey,
+//                                              style: BorderStyle.solid
+//                                          ),
+//                                        ),
+//                                      )
+//                                  )
+//                                ],
+//                              ),
+//                              Divider(
+//                                height: 12,
+//                                color: Colors.white,
+//                              )
+//                            ],
+//                          ),
+//                        );
+//                      }
+//                      else{
+                        return ChatListView(items[i], imgUrl);
+//                      }
                     },
                     itemCount: items.length,
                   )),
@@ -106,12 +158,8 @@ class ChatPageState extends State<ChatPage> {
 
   void _sendMsg() {
     print('发送消息');
-    ChatItem chatItem = new ChatItem();
-    chatItem.msg = inputValue;
-    chatItem.type = 0;
-    ChatItem chatItem2 = new ChatItem();
-    chatItem2.msg = getoutValue(inputValue);
-    chatItem2.type = 1;
+    ChatItem chatItem = new ChatItem(inputValue, 0);
+    ChatItem chatItem2 = new ChatItem(getoutValue(inputValue), 1);
     setState(() {
       this.items.add(chatItem);
       this.items.add(chatItem2);
@@ -137,6 +185,10 @@ class ChatItem {
   var msg;
   int type;
 
+
+
+  ChatItem(this.msg, this.type);
+
   String getMsg() {
     return msg;
   }
@@ -144,21 +196,22 @@ class ChatItem {
 
 class ChatListView extends StatefulWidget {
   ChatItem item;
+  String imgUrl;
 
-  ChatListView(this.item);
+
+  ChatListView(this.item, this.imgUrl);
 
   @override
-  State<StatefulWidget> createState() {
-    // TODO: implement createState
-    return _ChatListViewState(item);
-  }
+  State<StatefulWidget> createState() => _ChatListViewState(item, imgUrl);
 }
 
 class _ChatListViewState extends State<ChatListView> {
   ChatItem item;
+  String imgUrl;
+
   var defaultAvatar = 'images/me.png';
 
-  _ChatListViewState(this.item);
+  _ChatListViewState(this.item, this.imgUrl);
 
   @override
   Widget build(BuildContext context) {
@@ -169,50 +222,68 @@ class _ChatListViewState extends State<ChatListView> {
   Widget getItem() {
     if (item.type == 0) {
       return new Container(
-          child: new Row(
+          child: Column(
             children: <Widget>[
-              new Expanded(
-                child: Container(
-                    child: new Text(
-                      item.msg,
-                      textAlign: TextAlign.right,
-                      style: TextStyle(color: Colors.black, fontSize: 16),
-                    ),
-                  decoration: BoxDecoration(
-                    borderRadius:BorderRadius.all(Radius.circular(8.0)),
-                    border: Border.all(
-                        color: Colors.grey,
+              new Row(
+                children: <Widget>[
+                  new Expanded(
+                    child: Container(
+                      height: 50,
+                      child: new Text(
+                        item.msg,
+                        textAlign: TextAlign.right,
+                        style: TextStyle(color: Colors.black, fontSize: 16),
+                      ),
+                      decoration: BoxDecoration(
+                        borderRadius:BorderRadius.all(Radius.circular(8.0)),
+                        border: Border.all(
+                            color: Colors.grey,
 //                width: 5.0,
-                        style: BorderStyle.solid
+                            style: BorderStyle.solid
+                        ),
+                      ),
                     ),
                   ),
-                ),
+                  new Image.asset(defaultAvatar, width: 36.0, height: 36.0),
+                ],
               ),
-              new Image.asset(defaultAvatar, width: 36.0, height: 36.0),
+              Divider(
+                height: 12,
+                color: Colors.white,
+              )
             ],
           ),
       );
     } else {
       return new Container(
-        child: new Row(
+        child: Column(
           children: <Widget>[
-            new Image.asset(defaultAvatar, width: 36.0, height: 36.0),
-            new Expanded(
-                child: Container(
-                  child: Text(
-                  item.msg,
-                  textAlign: TextAlign.left,
-                  style: TextStyle(color: Colors.red, fontSize: 16),
-                  ),
-                  decoration: BoxDecoration(
-                    borderRadius:BorderRadius.all(Radius.circular(8.0)),
-                    border: Border.all(
-                        color: Colors.grey,
+            new Row(
+              children: <Widget>[
+                new Image.asset(imgUrl, width: 36.0, height: 36.0),
+                new Expanded(
+                    child: Container(
+                      height: 50,
+                      child: Text(
+                        item.msg,
+                        textAlign: TextAlign.left,
+                        style: TextStyle(color: Colors.black, fontSize: 16),
+                      ),
+                      decoration: BoxDecoration(
+                        borderRadius:BorderRadius.all(Radius.circular(8.0)),
+                        border: Border.all(
+                            color: Colors.grey,
 //                width: 5.0,
-                        style: BorderStyle.solid
-                    ),
-                  ),
+                            style: BorderStyle.solid
+                        ),
+                      ),
+                    )
                 )
+              ],
+            ),
+            Divider(
+              height: 12,
+              color: Colors.white,
             )
           ],
         ),

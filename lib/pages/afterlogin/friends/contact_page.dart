@@ -131,7 +131,6 @@ class StateContactPage extends State<ContactPage> {
 
                   //tab2页面
                   Container(
-
                   ),
                 ],
               )
@@ -153,8 +152,6 @@ class StateContactPage extends State<ContactPage> {
 //      Friend(type: 0, url: "images/ic_tag.png", name: "tags"),
 //      Friend(type: 0, url: "images/ic_public_account.png", name: "official account")
 //    ]);
-    _letterList.addAll(commonList);
-    _letterList.addAll(commonList);
     _letterList.addAll(commonList);
 
     /// 计算第一个字母开始位置
@@ -288,19 +285,19 @@ class StateContactPage extends State<ContactPage> {
             Positioned(
                 left: 0,
                 bottom: 0,
-                child: ClipRRect(
-                    borderRadius: BorderRadius.circular(4),
+                child: Container(
+//                    borderRadius: BorderRadius.circular(4),
                     child: type == 1
                         ? Image.asset(
-//                      url ??
+                      url ??
                           defaultAvatar,
                       fit: BoxFit.contain,
                       height: 40,
                       width: 40,
                     )
                         : Image.asset(
-                      url,
-                      fit: BoxFit.cover,
+                      defaultAvatar,
+                      fit: BoxFit.contain,
                       width: 40,
                       height: 40,
                     ))),

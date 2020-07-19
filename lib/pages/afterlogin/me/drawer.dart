@@ -49,8 +49,8 @@ class DrawerPage extends Drawer {
                       children: <Widget>[
                         //头像
                         new Container(
-                          width: 80.0,
-                          height: 80.0,
+                          width: 60.0,
+                          height: 60.0,
                           margin: EdgeInsets.only(right: 10.0, bottom: 15.0),
                           decoration: BoxDecoration(
                             image: DecorationImage(
@@ -65,12 +65,12 @@ class DrawerPage extends Drawer {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             new Text(
-                              '用户名',
+                              '我',
                               style: new TextStyle(
                                   color: Colors.white, fontSize: 25.0),
                             ),
                             new Text(
-                              '学号',
+                              '2018091605026',
                               style: new TextStyle(
                                   color: Colors.white, fontSize: 15.0),
                             )

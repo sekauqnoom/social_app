@@ -54,7 +54,7 @@ class MessagePageState extends State<MessagePage>{
       ListTile(
         onTap: () {
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => ChatPage(name)));
+              context, MaterialPageRoute(builder: (context) => ChatPage(imgUrl, name, lastMsg)));
         },
         leading: Container(
           height: 43,
@@ -65,9 +65,9 @@ class MessagePageState extends State<MessagePage>{
                 bottom: 0,
                 child: ClipRRect(
                     borderRadius: BorderRadius.circular(4),
-                    child: Image.network(
+                    child: Image.asset(
                       imgUrl ??
-                          "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcStSJPuGbyKL4NnEPTuyumS9CkheNYQdmpLwHW5VJ1kOCCoUpj9",
+                          "images/me.png",
                       fit: BoxFit.cover,
                       height: 40,
                       width: 40,
