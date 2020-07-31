@@ -52,12 +52,6 @@ class ContactApi{
       Friend(
           type: 1,
           url:
-          "images/9.jpg",
-          name: "郭老师",
-          startLetter: "G"),
-      Friend(
-          type: 1,
-          url:
           "images/15.jpg",
           name: "可心",
           startLetter: "K"),
@@ -65,7 +59,7 @@ class ContactApi{
           type: 1,
           url:
           "images/8.jpg",
-          name: "姐姐",
+          name: "嘉佳学姐",
           startLetter: "J"),
       Friend(type: 1, url: null, name: "...", startLetter: "#"),
       Friend(type: 1, url: null, name: "琪琪", startLetter: "Q"),
@@ -118,12 +112,6 @@ class ContactApi{
           "images/12.jpg",
           name: "张文",
           startLetter: "Z"),
-      Friend(
-          type: 1,
-          url:
-          "images/13.jpg",
-          name: "哥哥",
-          startLetter: "G"),
       Friend(
           type: 1,
           url:

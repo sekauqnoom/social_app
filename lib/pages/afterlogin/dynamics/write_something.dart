@@ -84,7 +84,7 @@ class WritePageState extends State<WritePage> {
                             + DateTime.now().hour.toString()+':'+DateTime.now().minute.toString();
                       }
 
-                      counter.addDynamic(Dynamic('我', _textEditingController.text, datetime, photos, photoUrls));
+                      counter.addDynamic(Dynamic('我', _textEditingController.text, datetime, 'images/me.png', photos, photoUrls));
                       print('发表成功');
                       Navigator.pop(context);
                     }

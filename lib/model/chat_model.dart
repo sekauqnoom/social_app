@@ -28,7 +28,7 @@ class Messages{
     _chatModels.add(ChatModel(
         "images/11.jpg",
         "花花酱",
-        "在干什么呢",
+        "中午一起吃饭吗",
         "10:55"));
     _chatModels.add(ChatModel(
         "images/3.jpg",
@@ -46,13 +46,8 @@ class Messages{
 //        "大家记得提交作业",
 //        "昨天"));
     _chatModels.add(ChatModel(
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRQRNGE15zEjPG0iPMzszoSF15Gt1-P-BGQhLR9WXEnBhSPoU9c",
-        "技术交流群",
-        "flutter移动端第一",
-        "昨天"));
-    _chatModels.add(ChatModel(
         "images/8.jpg",
-        "姐姐",
+        "嘉佳学姐",
         "面试咋样啊",
         "前天"));
 //    _chatModels.add(ChatModel(
@@ -60,16 +55,16 @@ class Messages{
 //        "移动端群",
 //        "flutter学习资料",
 //        "前天"));
-    _chatModels.add(ChatModel(
-        "images/13.jpg",
-        "哥哥",
-        "哈哈哈哈哈哈",
-        "前天"));
+//    _chatModels.add(ChatModel(
+//        "images/13.jpg",
+//        "哥哥",
+//        "哈哈哈哈哈哈",
+//        "前天"));
     _chatModels.add(ChatModel(
         "images/14.jpg",
         "唐希",
         "上课呢",
-        "2020/02/29"));
+        "2020/07/13"));
 //    _chatModels.add(ChatModel(
 //        "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcREk_qXU3ZmiiiKVXmMJbUsKLHLFwHzJPIQsTG5__Egp_wS2qqF",
 //        "flutter 学习交流",
@@ -94,7 +89,7 @@ class Messages{
         "images/1.jpg",
         "JJ",
         "打球约吗",
-        "2010/01/02"));
+        "2010/07/12"));
     return _chatModels;
   }
 }

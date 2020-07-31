@@ -58,17 +58,17 @@ class ResourcePageState extends State<ResourcePage> with SingleTickerProviderSta
                     ),
                     textAlign: TextAlign.end,
                   ),
-                  onTap: () async{
-                    var url = pdf_search_site[resourceNumber].resourceUrl;
-                    if (await canLaunch(url)) {
-                      await launch(url);
-                    } else {
-                      throw 'Could not launch $url';
-                    }
-                  },
-//                    onTap: () => Navigator.of(context).push(new MaterialPageRoute(builder: (_) {
-//                      return new Browser(url: pdf_search_site[resourceNumber].resourceUrl,title: pdf_search_site[resourceNumber].title,);
-//                    })),
+//                  onTap: () async{
+//                    var url = pdf_search_site[resourceNumber].resourceUrl;
+//                    if (await canLaunch(url)) {
+//                      await launch(url);
+//                    } else {
+//                      throw 'Could not launch $url';
+//                    }
+//                  },
+                    onTap: () => Navigator.of(context).push(new MaterialPageRoute(builder: (_) {
+                      return new Browser(url: pdf_search_site[resourceNumber].resourceUrl,title: pdf_search_site[resourceNumber].title,);
+                    })),
                 );
               }
               else {
@@ -104,14 +104,17 @@ class ResourcePageState extends State<ResourcePage> with SingleTickerProviderSta
                     ),
                     textAlign: TextAlign.end,
                   ),
-                  onTap: () async{
-                    var url = learning_video_site[resourceNumber].resourceUrl;
-                    if (await canLaunch(url)) {
-                      await launch(url);
-                    } else {
-                      throw 'Could not launch $url';
-                    }
-                  },
+                  onTap: () => Navigator.of(context).push(new MaterialPageRoute(builder: (_) {
+                    return new Browser(url: learning_video_site[resourceNumber].resourceUrl,title: learning_video_site[resourceNumber].title,);
+                  })),
+//                  onTap: () async{
+//                    var url = learning_video_site[resourceNumber].resourceUrl;
+//                    if (await canLaunch(url)) {
+//                      await launch(url);
+//                    } else {
+//                      throw 'Could not launch $url';
+//                    }
+//                  },
                 );
               }
               else {
@@ -147,14 +150,17 @@ class ResourcePageState extends State<ResourcePage> with SingleTickerProviderSta
                     ),
                     textAlign: TextAlign.end,
                   ),
-                  onTap: () async{
-                    var url = no_video_learning_site[resourceNumber].resourceUrl;
-                    if (await canLaunch(url)) {
-                      await launch(url);
-                    } else {
-                      throw 'Could not launch $url';
-                    }
-                  },
+                  onTap: () => Navigator.of(context).push(new MaterialPageRoute(builder: (_) {
+                    return new Browser(url: no_video_learning_site[resourceNumber].resourceUrl,title: no_video_learning_site[resourceNumber].title,);
+                  })),
+//                  onTap: () async{
+//                    var url = no_video_learning_site[resourceNumber].resourceUrl;
+//                    if (await canLaunch(url)) {
+//                      await launch(url);
+//                    } else {
+//                      throw 'Could not launch $url';
+//                    }
+//                  },
                 );
               }
               else {

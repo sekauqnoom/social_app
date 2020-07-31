@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:socialapp/model/news/spider_news.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'browser.dart';
 
 class NewsPage extends StatefulWidget {
   @override
@@ -72,14 +73,16 @@ class NewsPageState extends State<NewsPage> with SingleTickerProviderStateMixin{
                           ),
                           textAlign: TextAlign.start,
                         ),
-                        onTap: () async{
-                          var url = newsList[newsNumber].newsUrl;
-                          if (await canLaunch(url)) {
-                            await launch(url);
-                          } else {
-                            throw 'Could not launch $url';
-                          }
-                        },
+
+                        onTap: () => Navigator.of(context).push(new MaterialPageRoute(builder: (_) {
+                          //webview
+                          return new Browser(url: newsList[newsNumber].newsUrl, title: newsList[newsNumber].title,);
+                        })),
+//                          if (await canLaunch(url)) {
+//                            await launch(url);
+//                          } else {
+//                            throw 'Could not launch $url';
+//                          }
                       );
                     }
                     else if(index == displayLength - 1){
@@ -88,14 +91,18 @@ class NewsPageState extends State<NewsPage> with SingleTickerProviderStateMixin{
                           style: TextStyle(color: Colors.grey, fontSize: 30),
                           textAlign: TextAlign.center,
                         ),
-                        onTap: () async{
-                          var url = 'https://news.uestc.edu.cn/';
-                          if (await canLaunch(url)) {
-                            await launch(url);
-                          } else {
-                            throw 'Could not launch $url';
-                          }
-                        },
+                        onTap: () => Navigator.of(context).push(new MaterialPageRoute(builder: (_) {
+                          //webview
+                          return new Browser(url: 'https://news.uestc.edu.cn/', title: '更多资讯',);
+                        })),
+//                        onTap: () async{
+//                          var url = 'https://news.uestc.edu.cn/';
+//                          if (await canLaunch(url)) {
+//                            await launch(url);
+//                          } else {
+//                            throw 'Could not launch $url';
+//                          }
+//                        },
                       );
                     }
                     else {

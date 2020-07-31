@@ -74,7 +74,7 @@ class DynamicsPageState extends State<DynamicsPage> {
 //                        margin: EdgeInsets.only(right: 10.0, bottom: 15.0),
                         decoration: BoxDecoration(
                           image: DecorationImage(
-                            image: AssetImage("images/me.png"),
+                            image: AssetImage(currentDynamic.headpic),
                             fit: BoxFit.fitHeight,
                           ),
                           shape: BoxShape.circle,

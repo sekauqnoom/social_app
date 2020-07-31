@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Course extends ChangeNotifier{
-  String _userId;
+  String _sno;
   String _courseId;
   String _courseName;
   String _teacher;
@@ -12,7 +12,7 @@ class Course extends ChangeNotifier{
   int _weekday;  //周几的课
   String _week;  //周数，如1-16
 
-  String get userId => _userId;
+  String get sno => _sno;
   String get courseId => _courseId;
   String get courseName => _courseName;
   String get teacher => _teacher;
@@ -22,6 +22,10 @@ class Course extends ChangeNotifier{
   String get classRoom => _classRoom;
   int get weekday => _weekday;
   String get week => _week;
+
+  set sno(String value) {
+    _sno = value;
+  }
 
   set week(String value) {
     _week = value;
@@ -56,16 +60,13 @@ class Course extends ChangeNotifier{
     _courseId = value;
   }
 
-  set userId(String value) {
-    _userId = value;
-  }
 
   set classTime(int value) {
     _classTime = value;
   }
 
 
-  Course(this._userId, this._courseId, this._courseName, this._teacher,
+  Course(this._sno, this._courseId, this._courseName, this._teacher,
       this._classRoom, this._major, this._department, this._weekday,
       this._classTime, this._week);
 

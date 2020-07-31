@@ -12,7 +12,6 @@ class User extends ChangeNotifier {
   String _name;
   String _gender;
   DateTime _birthday;
-  String _emotionalState;
 
   String _sno;
   int _enrollYear;
@@ -27,7 +26,6 @@ class User extends ChangeNotifier {
   String get name => _name;
   String get gender => _gender;
   DateTime get birthday => _birthday;
-  String get emotionalState => _emotionalState;
   String get sno => _sno;
   int get enrollYear => _enrollYear;
   String get department => _department;
@@ -61,9 +59,7 @@ class User extends ChangeNotifier {
     _birthday = value;
   }
 
-  set emotionalState(String value) {
-    _emotionalState = value;
-  }
+
 
   set sno(String value) {
     _sno = value;
@@ -90,7 +86,6 @@ class User extends ChangeNotifier {
   static const String _NAME_JSON = "name";
   static const String _GENDER_JSON = "gender";
   static const String _BIRTHDAY_JSON = "birthday";
-  static const String _EMOSTATE_JSON = "emotionalstate";
   static const String _SNO_JSON = "";
   static const String _ENROLLYEAR_JSON = "";
   static const String _DEPARTMENT_JSON = "";
@@ -104,7 +99,6 @@ class User extends ChangeNotifier {
     _name = json[_NAME_JSON];
     _gender = json[_GENDER_JSON];
     _birthday = json[_BIRTHDAY_JSON];
-    _emotionalState = json[_EMOSTATE_JSON];
     _sno = json[_SNO_JSON];
     _enrollYear = json[_ENROLLYEAR_JSON];
     _department = json[_DEPARTMENT_JSON];

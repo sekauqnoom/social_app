@@ -9,8 +9,6 @@ import 'package:socialapp/model/friends/friend_model.dart';
 import 'package:socialapp/model/friends/friend_count.dart';
 import 'package:socialapp/model/hobby/hobby_model.dart';
 import 'package:socialapp/model/hobby/hobby_count.dart';
-import 'package:socialapp/model/contact/contact_model.dart';
-import 'package:socialapp/model/contact/contact_count.dart';
 import 'package:socialapp/model/shared_dynamics/dynamic_model.dart';
 import 'package:socialapp/model/shared_dynamics/dynamic_count.dart';
 import 'package:socialapp/model/user/user_model.dart';
@@ -75,8 +73,8 @@ class SocialAppState extends State<SocialApp> with SingleTickerProviderStateMixi
         ChangeNotifierProvider(builder: (context) => CourseCounter(),),
         ChangeNotifierProvider(builder: (context) => Hobby(),),
         ChangeNotifierProvider(builder: (context) => HobbyCounter(),),
-        ChangeNotifierProvider(builder: (context) => Contact(),),
-        ChangeNotifierProvider(builder: (context) => ContactCounter(),),
+//        ChangeNotifierProvider(builder: (context) => Contact(),),
+//        ChangeNotifierProvider(builder: (context) => ContactCounter(),),
 //        ChangeNotifierProvider(builder: (context) => Dynamic(),),
         ChangeNotifierProvider(builder: (context) => DynamicCounter(),),
 //        ChangeNotifierProvider(builder: (context) => News(),),

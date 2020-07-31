@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class Dynamic extends ChangeNotifier{
   String _userName;
   String _text;
+  String _headpic;
 //  dynamicType _type;
   List _images;
   List _imageUrls;
@@ -16,6 +17,13 @@ class Dynamic extends ChangeNotifier{
 
   String get userName => _userName;
 
+
+  String get headpic => _headpic;
+
+  set headpic(String value) {
+    _headpic = value;
+  }
+
   set userName(String value) {
     _userName = value;
   }
@@ -28,7 +36,7 @@ class Dynamic extends ChangeNotifier{
     _dateTime = value;
   }
 
-  Dynamic(this._userName, this._text, this._dateTime, this._images, this._imageUrls);
+  Dynamic(this._userName, this._text, this._dateTime, this._headpic, this._images, this._imageUrls);
 
   set text(String value) {
     _text = value;

@@ -254,6 +254,12 @@ class LoginPageState extends State<LoginPage> {
                             "user": user,
                           });
                           _loginMsg = "登录成功，正在跳转...";
+//                          showDialog(
+//                                        context: context,
+//                                        builder: (_) => AlertDialog(
+//                                          title: Text("Alert"),
+//                                          content: Text("登录成功！"),
+//                                        ));
                         }
 //
 //                            ///登录成功
